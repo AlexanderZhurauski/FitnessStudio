@@ -1,9 +1,6 @@
 package web.controllers;
 
-import dto.BaseEssence;
-import dto.PageOfUserDTO;
-import dto.UserCreateDTO;
-import dto.UserDTO;
+import dto.*;
 import dto.enums.UserRole;
 import dto.enums.UserStatus;
 import org.springframework.http.HttpStatus;
@@ -27,19 +24,22 @@ public class UserController {
                                      @RequestParam(defaultValue = "20") long size) {
         PageOfUserDTO pageResponse = new PageOfUserDTO();
         UserDTO userData = new UserDTO();
+        PageEssence pageEssence = new PageEssence();
 
         userData.setMail("gandalfdude@gmail.com");
         userData.setRole(UserRole.ADMIN);
         userData.setStatus(UserStatus.ACTIVATED);
         userData.setFullName("Alexander ZH");
-
         pageResponse.setContent(userData);
-        pageResponse.setFirst(true);
-        pageResponse.setLast(false);
-        pageResponse.setTotalPages(10);
-        pageResponse.setNumber(1);
-        pageResponse.setTotalElements(100);
-        pageResponse.setSize(10);
+
+        pageEssence.setFirst(true);
+        pageEssence.setLast(false);
+        pageEssence.setTotalPages(10);
+        pageEssence.setNumber(1);
+        pageEssence.setTotalElements(100);
+        pageEssence.setSize(10);
+        pageResponse.setPageEssence(pageEssence);
+
         return pageResponse;
     }
 
