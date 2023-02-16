@@ -2,19 +2,14 @@ package dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import dto.converters.InstantToUnix;
-import dto.converters.UnixToInstant;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import dto.enums.UserRole;
 import dto.enums.UserStatus;
 
 import java.time.Instant;
 import java.util.UUID;
 @JsonPropertyOrder({
-        "uuid",
-        "dt_create",
-        "dt_update",
+        "baseEssence",
         "mail",
         "fio",
         "role",
@@ -22,13 +17,8 @@ import java.util.UUID;
 })
 public class UserDTO {
 
-    private UUID uuid;
-    @JsonSerialize(converter = InstantToUnix.class)
-    @JsonDeserialize(converter = UnixToInstant.class)
-    private Instant creationTime;
-    @JsonSerialize(converter = InstantToUnix.class)
-    @JsonDeserialize(converter = UnixToInstant.class)
-    private Instant lastUpdated;
+    @JsonUnwrapped
+    private BaseEssence baseEssence;
     private	String mail;
 
     private	String fullName;
@@ -38,42 +28,21 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(UUID uuid, Instant creationTime,
-                   Instant lastUpdated, String mail,
+    public UserDTO(BaseEssence baseEssence, String mail,
                    String fullName, UserRole role, UserStatus status) {
-        this.uuid = uuid;
-        this.creationTime = creationTime;
-        this.lastUpdated = lastUpdated;
+        this.baseEssence = baseEssence;
         this.mail = mail;
         this.fullName = fullName;
         this.role = role;
         this.status = status;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public BaseEssence getBaseEssence() {
+        return baseEssence;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-    @JsonProperty("dt_create")
-    public Instant getCreationTime() {
-        return creationTime;
-    }
-    @JsonProperty("dt_create")
-    public void setCreationTime(Instant creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    @JsonProperty("dt_update")
-    public Instant getLastUpdated() {
-        return lastUpdated;
-    }
-
-    @JsonProperty("dt_update")
-    public void setLastUpdated(Instant lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setBaseEssence(BaseEssence baseEssence) {
+        this.baseEssence = baseEssence;
     }
 
     public String getMail() {

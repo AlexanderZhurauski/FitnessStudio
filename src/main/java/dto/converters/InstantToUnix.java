@@ -9,6 +9,6 @@ public class InstantToUnix extends StdConverter<Instant, Long> {
 
     @Override
     public Long convert(Instant instant) {
-        return instant.getEpochSecond();
+        return instant.toEpochMilli();
     }
 }

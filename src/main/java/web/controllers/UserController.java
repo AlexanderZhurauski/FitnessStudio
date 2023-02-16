@@ -1,5 +1,6 @@
 package web.controllers;
 
+import dto.BaseEssence;
 import dto.PageOfUserDTO;
 import dto.UserCreateDTO;
 import dto.UserDTO;
@@ -17,7 +18,7 @@ import java.util.UUID;
 public class UserController {
 
     @PostMapping
-    public ResponseEntity createUser(@RequestBody UserCreateDTO user) {
+    public ResponseEntity<String> createUser(@RequestBody UserCreateDTO user) {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -27,12 +28,9 @@ public class UserController {
         PageOfUserDTO pageResponse = new PageOfUserDTO();
         UserDTO userData = new UserDTO();
 
-        userData.setCreationTime(Instant.now());
-        userData.setLastUpdated(Instant.now());
         userData.setMail("gandalfdude@gmail.com");
         userData.setRole(UserRole.ADMIN);
         userData.setStatus(UserStatus.ACTIVATED);
-        userData.setUuid(UUID.randomUUID());
         userData.setFullName("Alexander ZH");
 
         pageResponse.setContent(userData);
@@ -48,21 +46,26 @@ public class UserController {
     @GetMapping("/{uuid}")
     public UserDTO getUserData(@PathVariable UUID uuid) {
         UserDTO userData = new UserDTO();
-        userData.setCreationTime(Instant.now());
-        userData.setLastUpdated(Instant.now());
+        BaseEssence baseEssence = new BaseEssence();
+        baseEssence.setCreationTime(Instant.now());
+        baseEssence.setLastUpdated(Instant.now());
+        baseEssence.setUuid(uuid);
+
+        userData.setBaseEssence(baseEssence);
         userData.setMail("gandalfdude@gmail.com");
         userData.setRole(UserRole.ADMIN);
         userData.setStatus(UserStatus.ACTIVATED);
-        userData.setUuid(uuid);
         userData.setFullName("Alexander ZH");
 
         return userData;
     }
 
     @PutMapping("/{uuid}/dt_update/{dt_update}")
-    public void updateUser(@PathVariable UUID uuid,
-                           @PathVariable Instant dt_update,
-                           @RequestBody UserCreateDTO user) {
+    public ResponseEntity<String> updateUser(@PathVariable UUID uuid,
+                                             @PathVariable Long dt_update,
+                                             @RequestBody UserCreateDTO user) {
 
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("sussy baka");
     }
 }

@@ -17,12 +17,9 @@ public class PageOfUserDTO {
 
     private long number;
     private long size;
-    @JsonProperty(namespace = "total_pages")
     private long totalPages;
-    @JsonProperty(namespace = "total_elements")
     private long totalElements;
     private boolean first;
-    @JsonProperty(namespace = "number_of_elements")
     private long numberOfElements;
     private boolean last;
     private UserDTO content;
@@ -47,63 +44,54 @@ public class PageOfUserDTO {
     public long getNumber() {
         return number;
     }
-
     public void setNumber(long number) {
         this.number = number;
     }
-
     public long getSize() {
         return size;
     }
-
     public void setSize(long size) {
         this.size = size;
     }
-
+    @JsonProperty("total_pages")
     public long getTotalPages() {
         return totalPages;
     }
-
+    @JsonProperty("total_pages")
     public void setTotalPages(long totalPages) {
         this.totalPages = totalPages;
     }
-
+    @JsonProperty("total_elements")
     public long getTotalElements() {
         return totalElements;
     }
-
+    @JsonProperty("total_elements")
     public void setTotalElements(long totalElements) {
         this.totalElements = totalElements;
     }
-
     public boolean isFirst() {
         return first;
     }
-
     public void setFirst(boolean first) {
         this.first = first;
     }
-
+    @JsonProperty("number_of_elements")
     public long getNumberOfElements() {
         return numberOfElements;
     }
-
+    @JsonProperty("number_of_elements")
     public void setNumberOfElements(long numberOfElements) {
         this.numberOfElements = numberOfElements;
     }
-
     public boolean isLast() {
         return last;
     }
-
     public void setLast(boolean last) {
         this.last = last;
     }
-
     public UserDTO getContent() {
         return content;
     }
-
     public void setContent(UserDTO content) {
         this.content = content;
     }
