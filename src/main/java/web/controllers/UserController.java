@@ -34,7 +34,6 @@ public class UserController {
         userData.setStatus(UserStatus.ACTIVATED);
         userData.setUuid(UUID.randomUUID());
         userData.setFullName("Alexander ZH");
-        userData.setReadOnly(true);
 
         pageResponse.setContent(userData);
         pageResponse.setFirst(true);
@@ -56,7 +55,6 @@ public class UserController {
         userData.setStatus(UserStatus.ACTIVATED);
         userData.setUuid(uuid);
         userData.setFullName("Alexander ZH");
-        userData.setReadOnly(true);
 
         return userData;
     }

@@ -1,6 +1,7 @@
 package dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import dto.converters.InstantToUnix;
@@ -10,21 +11,26 @@ import dto.enums.UserStatus;
 
 import java.time.Instant;
 import java.util.UUID;
-
+@JsonPropertyOrder({
+        "uuid",
+        "dt_create",
+        "dt_update",
+        "mail",
+        "fio",
+        "role",
+        "status"
+})
 public class UserDTO {
 
     private UUID uuid;
-    private boolean readOnly;
-    @JsonProperty(namespace = "dt_create")
     @JsonSerialize(converter = InstantToUnix.class)
     @JsonDeserialize(converter = UnixToInstant.class)
     private Instant creationTime;
-    @JsonProperty(namespace = "dt_update")
     @JsonSerialize(converter = InstantToUnix.class)
     @JsonDeserialize(converter = UnixToInstant.class)
     private Instant lastUpdated;
     private	String mail;
-    @JsonProperty(namespace = "fio")
+
     private	String fullName;
     private UserRole role;
     private UserStatus status;
@@ -32,11 +38,10 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(UUID uuid, boolean readOnly, Instant creationTime,
+    public UserDTO(UUID uuid, Instant creationTime,
                    Instant lastUpdated, String mail,
                    String fullName, UserRole role, UserStatus status) {
         this.uuid = uuid;
-        this.readOnly = readOnly;
         this.creationTime = creationTime;
         this.lastUpdated = lastUpdated;
         this.mail = mail;
@@ -52,27 +57,21 @@ public class UserDTO {
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
-
-    public boolean isReadOnly() {
-        return readOnly;
-    }
-
-    public void setReadOnly(boolean readOnly) {
-        this.readOnly = readOnly;
-    }
-
+    @JsonProperty("dt_create")
     public Instant getCreationTime() {
         return creationTime;
     }
-
+    @JsonProperty("dt_create")
     public void setCreationTime(Instant creationTime) {
         this.creationTime = creationTime;
     }
 
+    @JsonProperty("dt_update")
     public Instant getLastUpdated() {
         return lastUpdated;
     }
 
+    @JsonProperty("dt_update")
     public void setLastUpdated(Instant lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
@@ -85,10 +84,12 @@ public class UserDTO {
         this.mail = mail;
     }
 
+    @JsonProperty("fio")
     public String getFullName() {
         return fullName;
     }
 
+    @JsonProperty("fio")
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }

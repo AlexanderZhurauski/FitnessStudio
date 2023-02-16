@@ -1,7 +1,18 @@
 package dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({
+        "number",
+        "size",
+        "total_pages",
+        "total_elements",
+        "first",
+        "number_of_elements",
+        "last",
+        "content"
+})
 public class PageOfUserDTO {
 
     private long number;

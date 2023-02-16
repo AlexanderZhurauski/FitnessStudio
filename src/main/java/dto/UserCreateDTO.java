@@ -1,12 +1,20 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import dto.enums.UserRole;
 import dto.enums.UserStatus;
-
+@JsonPropertyOrder({
+        "mail",
+        "fio",
+        "role",
+        "status",
+        "password"
+})
 public class UserCreateDTO {
 
     private String mail;
-    private String fio;
+    private String fullName;
     private UserRole role;
     private UserStatus status;
     private String password;
@@ -17,7 +25,7 @@ public class UserCreateDTO {
     public UserCreateDTO(String mail, String fio, UserRole role,
                          UserStatus status, String password) {
         this.mail = mail;
-        this.fio = fio;
+        this.fullName = fio;
         this.role = role;
         this.status = status;
         this.password = password;
@@ -31,12 +39,14 @@ public class UserCreateDTO {
         this.mail = mail;
     }
 
-    public String getFio() {
-        return fio;
+    @JsonProperty("fio")
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFio(String fio) {
-        this.fio = fio;
+    @JsonProperty("fio")
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public UserRole getRole() {
