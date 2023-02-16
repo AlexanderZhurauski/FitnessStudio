@@ -1,8 +1,8 @@
 package web.controllers;
 
-import dto.*;
-import dto.enums.UserRole;
-import dto.enums.UserStatus;
+import core.dto.*;
+import core.dto.enums.UserRole;
+import core.dto.enums.UserStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

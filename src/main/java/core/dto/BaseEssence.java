@@ -1,10 +1,10 @@
-package dto;
+package core.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import dto.converters.InstantToUnix;
-import dto.converters.UnixToInstant;
+import core.dto.converters.InstantToUnix;
+import core.dto.converters.UnixToInstant;
 
 import java.time.Instant;
 import java.util.UUID;

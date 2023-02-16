@@ -1,4 +1,4 @@
-package dto.enums;
+package core.dto.enums;
 
 public enum UserStatus {
 

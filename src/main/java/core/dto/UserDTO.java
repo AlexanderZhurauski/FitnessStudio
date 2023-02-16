@@ -1,34 +1,46 @@
-package dto;
+package core.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import dto.enums.UserRole;
-import dto.enums.UserStatus;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import core.dto.enums.UserRole;
+import core.dto.enums.UserStatus;
+
 @JsonPropertyOrder({
+        "baseEssence",
         "mail",
         "fio",
         "role",
-        "status",
-        "password"
+        "status"
 })
-public class UserCreateDTO {
+public class UserDTO {
 
-    private String mail;
-    private String fullName;
+    @JsonUnwrapped
+    private BaseEssence baseEssence;
+    private	String mail;
+
+    private	String fullName;
     private UserRole role;
     private UserStatus status;
-    private String password;
 
-    public UserCreateDTO() {
+    public UserDTO() {
     }
 
-    public UserCreateDTO(String mail, String fio, UserRole role,
-                         UserStatus status, String password) {
+    public UserDTO(BaseEssence baseEssence, String mail,
+                   String fullName, UserRole role, UserStatus status) {
+        this.baseEssence = baseEssence;
         this.mail = mail;
-        this.fullName = fio;
+        this.fullName = fullName;
         this.role = role;
         this.status = status;
-        this.password = password;
+    }
+
+    public BaseEssence getBaseEssence() {
+        return baseEssence;
+    }
+
+    public void setBaseEssence(BaseEssence baseEssence) {
+        this.baseEssence = baseEssence;
     }
 
     public String getMail() {
@@ -63,13 +75,5 @@ public class UserCreateDTO {
 
     public void setStatus(UserStatus status) {
         this.status = status;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

@@ -1,4 +1,4 @@
-package dto.errors;
+package core.exceptions.errors;
 
 public class ErrorField {
 

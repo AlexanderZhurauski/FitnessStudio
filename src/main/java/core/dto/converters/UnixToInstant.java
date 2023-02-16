@@ -1,4 +1,4 @@
-package dto.converters;
+package core.dto.converters;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
 
