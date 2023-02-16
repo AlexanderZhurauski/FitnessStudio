@@ -3,6 +3,8 @@ package core.dto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
+import java.util.List;
+
 @JsonPropertyOrder({
         "pageEssence",
         "content"
@@ -11,21 +13,21 @@ public class PageOfUserDTO {
 
     @JsonUnwrapped
     private PageEssence pageEssence;
-    private UserDTO content;
+    private List<UserDTO> content;
 
     public PageOfUserDTO() {
     }
 
     public PageOfUserDTO(PageEssence pageEssence,
-                         UserDTO content) {
+                         List<UserDTO> content) {
         this.pageEssence = pageEssence;
         this.content = content;
     }
 
-    public UserDTO getContent() {
+    public List<UserDTO> getContent() {
         return content;
     }
-    public void setContent(UserDTO content) {
+    public void setContent(List<UserDTO> content) {
         this.content = content;
     }
 

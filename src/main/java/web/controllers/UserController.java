@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -30,7 +31,7 @@ public class UserController {
         userData.setRole(UserRole.ADMIN);
         userData.setStatus(UserStatus.ACTIVATED);
         userData.setFullName("Alexander ZH");
-        pageResponse.setContent(userData);
+        pageResponse.setContent(List.of(userData));
 
         pageEssence.setFirst(true);
         pageEssence.setLast(false);

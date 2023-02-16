@@ -8,9 +8,7 @@ import core.dto.converters.UnixToInstant;
 
 import java.time.Instant;
 import java.util.UUID;
-
 public class BaseEssence {
-
     private UUID uuid;
     @JsonSerialize(converter = InstantToUnix.class)
     @JsonDeserialize(converter = UnixToInstant.class)
