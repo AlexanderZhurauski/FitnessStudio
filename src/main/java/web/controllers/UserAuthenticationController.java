@@ -19,17 +19,23 @@ public class UserAuthenticationController {
 
     @PostMapping("/registration")
     public ResponseEntity<String> register(UserRegistrationDTO userRegistration) {
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
     }
 
     @GetMapping("/verification")
-    public void verifyCode(@RequestParam String code) {
+    public ResponseEntity<String> verifyCode(@RequestParam String code,
+                                             @RequestParam String mail) {
 
+        return ResponseEntity.ok("Пользователь верифицирован");
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> register(UserLoginDTO userLogin) {
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Вход выполнен");
     }
 
     @GetMapping("/me")

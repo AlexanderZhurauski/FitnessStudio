@@ -6,6 +6,7 @@ import core.dto.enums.UserStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.Instant;
 import java.util.List;
@@ -17,7 +18,9 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody UserCreateDTO user) {
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Пользователь добавлен");
     }
 
     @GetMapping
@@ -66,7 +69,8 @@ public class UserController {
                                              @PathVariable Long dt_update,
                                              @RequestBody UserCreateDTO user) {
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body("sussy baka");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("Счёт обновлён");
     }
 }
