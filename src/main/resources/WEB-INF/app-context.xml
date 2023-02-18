@@ -16,10 +16,11 @@
         https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <import resource="dao.xml"/>
-    <context:component-scan base-package="web.controllers;core.exceptions.handlers"/>
-
-    <mvc:annotation-driven/>
-    <jpa:repositories base-package="dao.repositories"
+    <context:component-scan base-package="web.controllers;
+        core.exceptions.handlers;
+        dao.repositories.api"/>
+    <jpa:repositories base-package="dao.repositories.api"
                       enable-default-transactions="true"
                       entity-manager-factory-ref="EntityManagerFactory"/>
+    <mvc:annotation-driven/>
 </beans>
