@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import core.dto.enums.UserRole;
 import core.dto.enums.UserStatus;
+import dao.entities.User;
 
 @JsonPropertyOrder({
         "baseEssence",
@@ -24,6 +25,15 @@ public class UserDTO {
     private UserStatus status;
 
     public UserDTO() {
+    }
+
+    public UserDTO(User user) {
+        BaseEssence base = new BaseEssence(user.getUuid(),
+                user.getCreationTime(), user.getLastUpdated());
+        this.mail = user.getMail();
+        this.fullName = user.getFullName();
+        this.role = user.getRole();
+        this.status = user.getStatus();
     }
 
     public UserDTO(BaseEssence baseEssence, String mail,

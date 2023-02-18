@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import service.api.IUserDataService;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,6 +16,11 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
+    private IUserDataService service;
+
+    public UserController(IUserDataService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody UserCreateDTO user) {

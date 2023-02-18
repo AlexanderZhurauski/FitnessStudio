@@ -2,6 +2,7 @@ package dao.entities;
 
 
 
+import core.dto.UserCreateDTO;
 import core.dto.enums.UserRole;
 import core.dto.enums.UserStatus;
 
@@ -11,15 +12,20 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "user", schema = "app")
+//TODO: discover if all the fields should be in one table
 public class User {
     @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue
+    //TODO: find the best generation strategy
     private UUID uuid;
     @Column(name = "creation_time")
-    private Instant creationTime;
+    private Instant creationTime = Instant.now();
     @Column(name = "last_updated")
     @Version
-    private Instant lastUpdated;
+    private Instant lastUpdated = Instant.now();
     private	String mail;
+    //TODO: implement an encryption strategy
     private String password;
     @Column(name = "full_name")
     private	String fullName;
@@ -31,17 +37,21 @@ public class User {
     public User() {
     }
 
-    public User(UUID uuid, Instant creationTime, Instant lastUpdated,
-                String mail, String password, String fullName,
+    public User(String mail, String password, String fullName,
                 UserRole role, UserStatus status) {
-        this.uuid = uuid;
-        this.creationTime = creationTime;
-        this.lastUpdated = lastUpdated;
         this.mail = mail;
         this.password = password;
         this.fullName = fullName;
         this.role = role;
         this.status = status;
+    }
+
+    public User(UserCreateDTO userCreateDTO) {
+        this.mail = userCreateDTO.getMail();
+        this.password = userCreateDTO.getPassword();
+        this.fullName = userCreateDTO.getFullName();
+        this.role = userCreateDTO.getRole();
+        this.status = userCreateDTO.getStatus();
     }
 
     public UUID getUuid() {
