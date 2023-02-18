@@ -32,7 +32,7 @@ public class UserAuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> register(UserLoginDTO userLogin) {
+    public ResponseEntity<String> login(UserLoginDTO userLogin) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body("Вход выполнен");
