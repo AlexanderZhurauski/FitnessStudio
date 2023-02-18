@@ -3,10 +3,10 @@ package web.controllers;
 import core.dto.*;
 import core.dto.enums.UserRole;
 import core.dto.enums.UserStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.Instant;
 import java.util.List;
@@ -24,8 +24,7 @@ public class UserController {
     }
 
     @GetMapping
-    public PageOfUserDTO getUserPage(@RequestParam(defaultValue = "0") long page,
-                                     @RequestParam(defaultValue = "20") long size) {
+    public PageOfUserDTO getUserPage(Pageable pageParams) {
         PageOfUserDTO pageResponse = new PageOfUserDTO();
         UserDTO userData = new UserDTO();
         PageEssence pageEssence = new PageEssence();
@@ -36,12 +35,12 @@ public class UserController {
         userData.setFullName("Alexander ZH");
         pageResponse.setContent(List.of(userData));
 
-        pageEssence.setFirst(true);
+        pageEssence.setFirst(!pageParams.hasPrevious());
         pageEssence.setLast(false);
         pageEssence.setTotalPages(10);
-        pageEssence.setNumber(1);
+        pageEssence.setNumber(pageParams.getPageNumber());
         pageEssence.setTotalElements(100);
-        pageEssence.setSize(10);
+        pageEssence.setSize(pageParams.getPageSize());
         pageResponse.setPageEssence(pageEssence);
 
         return pageResponse;
