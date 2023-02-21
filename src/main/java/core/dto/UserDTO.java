@@ -30,6 +30,7 @@ public class UserDTO {
     public UserDTO(User user) {
         BaseEssence base = new BaseEssence(user.getUuid(),
                 user.getCreationTime(), user.getLastUpdated());
+        this.baseEssence = base;
         this.mail = user.getMail();
         this.fullName = user.getFullName();
         this.role = user.getRole();

@@ -13,6 +13,7 @@ import service.api.IUserDataService;
 
 import javax.persistence.OptimisticLockException;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -49,7 +50,7 @@ public class UserDataService implements IUserDataService {
         User user = this.userRepository.findById(uuid)
                 .orElseThrow(() -> new UserNotFoundException(uuid));
 
-        if (user.getLastUpdated().toEpochMilli() != lastUpdated) {
+        if (user.getLastUpdated().toEpochMilli() != lastUpdated.longValue()) {
             throw new OptimisticLockException(user);
         }
 

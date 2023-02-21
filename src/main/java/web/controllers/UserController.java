@@ -1,6 +1,8 @@
+
 package web.controllers;
 
 import core.dto.*;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,9 @@ public class UserController {
     }
 
     @GetMapping
-    public PageOfUserDTO getUserPage(Pageable pageParams) {
+    public PageOfUserDTO getUserPage(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "20") int size) {
+        Pageable pageParams = PageRequest.of(page, size);
         return this.service.getPage(pageParams);
     }
 

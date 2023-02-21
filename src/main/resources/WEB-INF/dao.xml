@@ -4,8 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="EntityManagerFactory" class="javax.persistence.Persistence"
+    <bean id="entityManagerFactory" class="javax.persistence.Persistence"
           factory-method="createEntityManagerFactory">
         <constructor-arg value="fitness"/>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 </beans>

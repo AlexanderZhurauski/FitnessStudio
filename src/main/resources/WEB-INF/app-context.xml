@@ -15,15 +15,17 @@
         http://www.springframework.org/schema/data/jpa
         https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-    <import resource="dao.xml"/>
-    
+    <import resource="service.xml"/>
+
+    <mvc:annotation-driven/>
+
     <context:component-scan base-package="web.controllers;
         core.exceptions.handlers;
-        dao.repositories.api"/>
+        dao.repositories.api;
+        service"/>
     
     <jpa:repositories base-package="dao.repositories.api"
                       enable-default-transactions="true"
-                      entity-manager-factory-ref="EntityManagerFactory"/>
-    
-    <mvc:annotation-driven/>
+                      transaction-manager-ref="transactionManager"
+                      entity-manager-factory-ref="entityManagerFactory"/>
 </beans>

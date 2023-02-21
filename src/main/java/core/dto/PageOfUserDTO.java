@@ -26,6 +26,7 @@ public class PageOfUserDTO {
         this.pageEssence.setFirst(userPage.isFirst());
         this.pageEssence.setLast(userPage.isLast());
         this.pageEssence.setTotalPages(userPage.getTotalPages());
+        this.pageEssence.setSize(userPage.getSize());
         this.pageEssence.setNumber(userPage.getNumber());
         this.pageEssence.setNumberOfElements(userPage.getNumberOfElements());
         this.pageEssence.setTotalElements(userPage.getTotalElements());
