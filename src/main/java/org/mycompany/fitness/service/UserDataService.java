@@ -59,6 +59,6 @@ public class UserDataService implements IUserDataService {
         user.setStatus(userCreateDTO.getStatus());
         user.setLastUpdated(Instant.now());
 
-        return new UserDTO(this.userRepository.save(user));
+        return new UserDTO(user);
     }
 }
