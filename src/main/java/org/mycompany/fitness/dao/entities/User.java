@@ -12,21 +12,18 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user", schema = "app")
-//TODO: discover if all the fields should be in one table
+@Table(schema = "app", name = "user")
 public class User {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue
-    //TODO: find the best generation strategy
     private UUID uuid;
-    @Column(name = "creation_time")
+    @Column(name = "creation_time", nullable = false)
     private Instant creationTime = Instant.now();
-    @Column(name = "last_updated")
+    @Column(name = "last_updated", nullable = false)
     @Version
     private Instant lastUpdated = Instant.now();
     private	String mail;
-    //TODO: implement an encryption strategy
     private String password;
     @Column(name = "full_name")
     private	String fullName;
