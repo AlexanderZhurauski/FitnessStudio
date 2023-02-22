@@ -57,7 +57,7 @@ public class UserDataService implements IUserDataService {
         user.setPassword(userCreateDTO.getPassword());
         user.setFullName(userCreateDTO.getFullName());
         user.setStatus(userCreateDTO.getStatus());
-        user.setLastUpdated(Instant.now());
+        this.userRepository.save(user);
 
         return new UserDTO(user);
     }

@@ -7,6 +7,8 @@ import org.mycompany.fitness.core.dto.enums.UserRole;
 import org.mycompany.fitness.core.dto.enums.UserStatus;
 
 import jakarta.persistence.*;
+import org.mycompany.fitness.dao.converters.InstantToLongConverter;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -20,8 +22,10 @@ public class User {
     //TODO: find the best generation strategy
     private UUID uuid;
     @Column(name = "creation_time")
+    @Convert(converter = InstantToLongConverter.class)
     private Instant creationTime = Instant.now();
     @Column(name = "last_updated")
+    @Convert(converter = InstantToLongConverter.class)
     @Version
     private Instant lastUpdated = Instant.now();
     private	String mail;
