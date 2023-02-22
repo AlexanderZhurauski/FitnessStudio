@@ -3,7 +3,7 @@ package org.mycompany.fitness.service;
 import jakarta.persistence.OptimisticLockException;
 import org.mycompany.fitness.core.dto.UserCreateDTO;
 import org.mycompany.fitness.core.dto.UserDTO;
-import org.mycompany.fitness.core.exceptions.custom.UserNotFoundException;
+import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
 import org.mycompany.fitness.dao.entities.User;
 import org.mycompany.fitness.dao.repositories.api.IUserRepository;
 import org.springframework.data.domain.Page;
@@ -37,14 +37,14 @@ public class UserDataService implements IUserDataService {
     @Override
     public UserDTO get(UUID uuid) {
         User user = this.userRepository.findById(uuid)
-                .orElseThrow(() -> new UserNotFoundException(uuid));
+                .orElseThrow(() -> new EntityNotFoundException(uuid, "user"));
         return new UserDTO(user);
     }
 
     @Override
     public UserDTO update(UUID uuid, Long lastUpdated, UserCreateDTO userCreateDTO) {
         User user = this.userRepository.findById(uuid)
-                .orElseThrow(() -> new UserNotFoundException(uuid));
+                .orElseThrow(() -> new EntityNotFoundException(uuid, "user"));
 
         if (user.getLastUpdated().toEpochMilli() != lastUpdated) {
             throw new OptimisticLockException("User with id '" + user.getUuid()

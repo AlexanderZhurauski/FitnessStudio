@@ -1,8 +1,11 @@
 package org.mycompany.fitness.config;
 
+import org.mycompany.fitness.dao.repositories.api.IProductRepository;
 import org.mycompany.fitness.dao.repositories.api.IUserRepository;
+import org.mycompany.fitness.service.ProductService;
 import org.mycompany.fitness.service.UserAuthenticationService;
 import org.mycompany.fitness.service.UserDataService;
+import org.mycompany.fitness.service.api.IProductService;
 import org.mycompany.fitness.service.api.IUserAuthenticationService;
 import org.mycompany.fitness.service.api.IUserDataService;
 import org.springframework.context.annotation.Bean;
@@ -19,5 +22,10 @@ public class ServiceConfig {
     @Bean
     public IUserAuthenticationService userAuthenticationService(IUserDataService userDataService) {
         return new UserAuthenticationService(userDataService);
+    }
+
+    @Bean
+    public IProductService productService(IProductRepository productRepository) {
+        return new ProductService(productRepository);
     }
 }
