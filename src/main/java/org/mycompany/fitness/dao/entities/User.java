@@ -7,6 +7,7 @@ import org.mycompany.fitness.core.dto.enums.UserRole;
 import org.mycompany.fitness.core.dto.enums.UserStatus;
 
 import jakarta.persistence.*;
+
 import java.time.Instant;
 import java.util.UUID;
 

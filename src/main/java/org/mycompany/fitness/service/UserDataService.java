@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.mycompany.fitness.service.api.IUserDataService;
 
-import java.time.Instant;
 import java.util.UUID;
 
 public class UserDataService implements IUserDataService {
@@ -57,8 +56,8 @@ public class UserDataService implements IUserDataService {
         user.setPassword(userCreateDTO.getPassword());
         user.setFullName(userCreateDTO.getFullName());
         user.setStatus(userCreateDTO.getStatus());
-        user.setLastUpdated(Instant.now());
+        this.userRepository.save(user);
 
-        return new UserDTO(this.userRepository.save(user));
+        return new UserDTO(user);
     }
 }
