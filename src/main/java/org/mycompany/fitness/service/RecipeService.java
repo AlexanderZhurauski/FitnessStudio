@@ -2,7 +2,9 @@ package org.mycompany.fitness.service;
 
 import jakarta.persistence.OptimisticLockException;
 import org.mycompany.fitness.core.dto.BaseEssence;
+import org.mycompany.fitness.core.dto.services.product.ProductDTO;
 import org.mycompany.fitness.core.dto.services.recipe.RecipeCompositionCreateDTO;
+import org.mycompany.fitness.core.dto.services.recipe.RecipeCompositionDTO;
 import org.mycompany.fitness.core.dto.services.recipe.RecipeCreateDTO;
 import org.mycompany.fitness.core.dto.services.recipe.RecipeDTO;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
@@ -116,6 +118,13 @@ public class RecipeService implements IRecipeService {
         recipeDTO.setBaseEssence(baseEssence);
         recipeDTO.setTitle(recipe.getTitle());
 
+        List<ProductInstance> productList = recipe.getComposition();
+        List<RecipeCompositionDTO> productComposition = productList.stream()
+                .map(product -> new RecipeCompositionDTO(new ProductDTO(product.getProduct()),
+                        product.getWeight(), product.getCalories(), product.getProteins(),
+                        product.getFats(), product.getCarbohydrates()))
+                .toList();
+        recipeDTO.setComposition(productComposition);
 
         return  recipeDTO;
     }
