@@ -22,8 +22,8 @@ public class Recipe {
     @JoinTable(
             name = "recipe_product",
             joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> composition;
+            inverseJoinColumns = @JoinColumn(name = "product_instance_id"))
+    private List<ProductInstance> composition;
     private String title;
     private int weight;
     private int calories;
@@ -38,7 +38,7 @@ public class Recipe {
                   Instant lastUpdated, String title,
                   int weight, int calories, double proteins,
                   double fats, double carbohydrates,
-                  List<Product> composition) {
+                  List<ProductInstance> composition) {
         this.uuid = uuid;
         this.creationTime = creationTime;
         this.lastUpdated = lastUpdated;
@@ -50,7 +50,6 @@ public class Recipe {
         this.carbohydrates = carbohydrates;
         this.composition = composition;
     }
-
     public UUID getUuid() {
         return uuid;
     }
@@ -75,11 +74,11 @@ public class Recipe {
         this.lastUpdated = lastUpdated;
     }
 
-    public List<Product> getComposition() {
+    public List<ProductInstance> getComposition() {
         return composition;
     }
 
-    public void setComposition(List<Product> composition) {
+    public void setComposition(List<ProductInstance> composition) {
         this.composition = composition;
     }
 

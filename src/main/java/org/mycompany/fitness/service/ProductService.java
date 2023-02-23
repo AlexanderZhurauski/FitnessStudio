@@ -33,6 +33,12 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public Product getByID(UUID uuid) {
+        return this.productRepository.findById(uuid)
+                .orElseThrow(() -> new EntityNotFoundException(uuid, "product"));
+    }
+
+    @Override
     public ProductDTO update(UUID uuid, Long lastUpdated,
                              ProductCreateDTO productCreateDTO) {
 
