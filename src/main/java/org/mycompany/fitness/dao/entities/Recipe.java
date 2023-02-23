@@ -20,9 +20,10 @@ public class Recipe {
     private Instant lastUpdated = Instant.now();
     @ManyToMany
     @JoinTable(
+            schema = "app",
             name = "recipe_product",
             joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_instance_id"))
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<ProductInstance> composition;
     private String title;
     private int weight;

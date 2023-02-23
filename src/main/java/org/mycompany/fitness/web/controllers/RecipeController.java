@@ -38,6 +38,8 @@ public class RecipeController {
                                                  @PathVariable Long lastUpdated,
                                                  @RequestBody RecipeCreateDTO product) {
 
-        return ResponseEntity.ok(this.recipeService.update(uuid, lastUpdated, product));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.recipeService.update(uuid, lastUpdated, product));
     }
 }

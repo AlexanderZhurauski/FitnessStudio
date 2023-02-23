@@ -1,5 +1,6 @@
 package org.mycompany.fitness.config;
 
+import org.mycompany.fitness.dao.repositories.api.IProductInstanceRepository;
 import org.mycompany.fitness.dao.repositories.api.IProductRepository;
 import org.mycompany.fitness.dao.repositories.api.IRecipeRepository;
 import org.mycompany.fitness.dao.repositories.api.IUserRepository;
@@ -33,8 +34,10 @@ public class ServiceConfig {
     }
 
     @Bean
-    public IRecipeService productService(IRecipeRepository recipeRepository,
+    public IRecipeService recipeService(IRecipeRepository recipeRepository,
+                                         IProductInstanceRepository productInstanceRepository,
                                          IProductService productService) {
-        return new RecipeService(recipeRepository, productService);
+        return new RecipeService(recipeRepository,
+                productInstanceRepository, productService);
     }
 }

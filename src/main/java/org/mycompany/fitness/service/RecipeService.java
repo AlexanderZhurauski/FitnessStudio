@@ -11,6 +11,7 @@ import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
 import org.mycompany.fitness.dao.entities.Product;
 import org.mycompany.fitness.dao.entities.ProductInstance;
 import org.mycompany.fitness.dao.entities.Recipe;
+import org.mycompany.fitness.dao.repositories.api.IProductInstanceRepository;
 import org.mycompany.fitness.dao.repositories.api.IRecipeRepository;
 import org.mycompany.fitness.service.api.IProductService;
 import org.mycompany.fitness.service.api.IRecipeService;
@@ -19,15 +20,19 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class RecipeService implements IRecipeService {
 
     private IRecipeRepository recipeRepository;
+    private IProductInstanceRepository productInstanceRepository;
     private IProductService productService;
 
     public RecipeService(IRecipeRepository recipeRepository,
+                         IProductInstanceRepository productInstanceRepository,
                          IProductService productService) {
         this.recipeRepository = recipeRepository;
+        this.productInstanceRepository = productInstanceRepository;
         this.productService = productService;
     }
 
@@ -87,10 +92,11 @@ public class RecipeService implements IRecipeService {
                             * product.getFats(), 1));
                     productInstance.setCarbohydrates(round(ratio
                             * product.getCarbohydrates(), 1));
+                    this.productInstanceRepository.save(productInstance);
 
                     return productInstance;
                 })
-                .toList();
+                .collect(Collectors.toList());
         recipe.setComposition(productList);
 
         int weight = productList.stream()
