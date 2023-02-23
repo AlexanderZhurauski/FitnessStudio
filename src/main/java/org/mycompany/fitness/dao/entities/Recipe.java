@@ -1,16 +1,14 @@
 package org.mycompany.fitness.dao.entities;
 
 import jakarta.persistence.*;
-import org.mycompany.fitness.core.dto.services.product.ProductCreateDTO;
 
 import java.time.Instant;
-import java.util.Objects;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "app", name = "product")
-public class Product {
-
+@Table(schema = "app", name = "recipe")
+public class Recipe {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue
@@ -20,6 +18,13 @@ public class Product {
     @Column(name = "last_updated", nullable = false)
     @Version
     private Instant lastUpdated = Instant.now();
+    @ManyToMany
+    @JoinTable(
+            schema = "app",
+            name = "recipe_product",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<ProductInstance> composition;
     private String title;
     private int weight;
     private int calories;
@@ -27,28 +32,25 @@ public class Product {
     private double fats;
     private double carbohydrates;
 
-    public Product() {
+    public Recipe() {
     }
 
-    public Product(String title, int weight, int calories,
-                   double proteins, double fats, double carbohydrates) {
+    public Recipe(UUID uuid, Instant creationTime,
+                  Instant lastUpdated, String title,
+                  int weight, int calories, double proteins,
+                  double fats, double carbohydrates,
+                  List<ProductInstance> composition) {
+        this.uuid = uuid;
+        this.creationTime = creationTime;
+        this.lastUpdated = lastUpdated;
         this.title = title;
         this.weight = weight;
         this.calories = calories;
         this.proteins = proteins;
         this.fats = fats;
         this.carbohydrates = carbohydrates;
+        this.composition = composition;
     }
-
-    public Product(ProductCreateDTO productCreateDTO) {
-        this.title = productCreateDTO.getTitle();
-        this.weight = productCreateDTO.getWeight();
-        this.calories = productCreateDTO.getCalories();
-        this.proteins = productCreateDTO.getProteins();
-        this.fats = productCreateDTO.getFats();
-        this.carbohydrates = productCreateDTO.getCarbohydrates();
-    }
-
     public UUID getUuid() {
         return uuid;
     }
@@ -71,6 +73,14 @@ public class Product {
 
     public void setLastUpdated(Instant lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public List<ProductInstance> getComposition() {
+        return composition;
+    }
+
+    public void setComposition(List<ProductInstance> composition) {
+        this.composition = composition;
     }
 
     public String getTitle() {
@@ -119,27 +129,5 @@ public class Product {
 
     public void setCarbohydrates(double carbohydrates) {
         this.carbohydrates = carbohydrates;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return weight == product.weight
-                && calories == product.calories
-                && Double.compare(product.proteins, proteins) == 0
-                && Double.compare(product.fats, fats) == 0
-                && Double.compare(product.carbohydrates, carbohydrates) == 0
-                && uuid.equals(product.uuid)
-                && creationTime.equals(product.creationTime)
-                && lastUpdated.equals(product.lastUpdated)
-                && title.equals(product.title);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uuid, creationTime, lastUpdated, title,
-                weight, calories, proteins, fats, carbohydrates);
     }
 }

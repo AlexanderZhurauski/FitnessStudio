@@ -1,7 +1,8 @@
 package org.mycompany.fitness.service.api;
 
-import org.mycompany.fitness.core.dto.ProductCreateDTO;
-import org.mycompany.fitness.core.dto.ProductDTO;
+import org.mycompany.fitness.core.dto.services.product.ProductCreateDTO;
+import org.mycompany.fitness.core.dto.services.product.ProductDTO;
+import org.mycompany.fitness.dao.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,5 +12,6 @@ public interface IProductService {
 
     UUID create(ProductCreateDTO productCreateDTO);
     Page<ProductDTO> getPage(Pageable pageable);
+    Product getByID(UUID uuid);
     ProductDTO update(UUID uuid, Long lastUpdated, ProductCreateDTO productCreateDTO);
 }

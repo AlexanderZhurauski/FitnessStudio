@@ -1,8 +1,9 @@
-package org.mycompany.fitness.core.dto;
+package org.mycompany.fitness.core.dto.services.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.mycompany.fitness.core.dto.BaseEssence;
 import org.mycompany.fitness.core.dto.enums.UserRole;
 import org.mycompany.fitness.core.dto.enums.UserStatus;
 import org.mycompany.fitness.dao.entities.User;

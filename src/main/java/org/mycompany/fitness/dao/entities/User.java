@@ -2,7 +2,7 @@ package org.mycompany.fitness.dao.entities;
 
 
 
-import org.mycompany.fitness.core.dto.UserCreateDTO;
+import org.mycompany.fitness.core.dto.services.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.enums.UserRole;
 import org.mycompany.fitness.core.dto.enums.UserStatus;
 

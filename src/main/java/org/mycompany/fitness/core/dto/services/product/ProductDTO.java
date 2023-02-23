@@ -1,8 +1,12 @@
-package org.mycompany.fitness.core.dto;
+package org.mycompany.fitness.core.dto.services.product;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.mycompany.fitness.core.dto.BaseEssence;
+import org.mycompany.fitness.dao.entities.Product;
 
-public class ProductCreateDTO {
-
+public class ProductDTO {
+    @JsonUnwrapped
+    private BaseEssence baseEssence;
     private String title;
     private int weight;
     private int calories;
@@ -10,18 +14,38 @@ public class ProductCreateDTO {
     private double fats;
     private double carbohydrates;
 
-    public ProductCreateDTO() {
+    public ProductDTO() {
     }
 
-    public ProductCreateDTO(String title, int weight, int calories,
-                            double proteins, double fats,
-                            double carbohydrates) {
+    public ProductDTO(BaseEssence baseEssence, String title, int weight,
+                      int calories, double proteins,
+                      double fats, double carbohydrates) {
+        this.baseEssence = baseEssence;
         this.title = title;
         this.weight = weight;
         this.calories = calories;
         this.proteins = proteins;
         this.fats = fats;
         this.carbohydrates = carbohydrates;
+    }
+
+    public ProductDTO(Product product) {
+        this.baseEssence = new BaseEssence(product.getUuid(),
+                product.getCreationTime(), product.getLastUpdated());
+        this.title = product.getTitle();
+        this.weight = product.getWeight();
+        this.calories = product.getCalories();
+        this.proteins = product.getProteins();
+        this.fats = product.getFats();
+        this.carbohydrates = product.getCarbohydrates();
+    }
+
+    public BaseEssence getBaseEssence() {
+        return baseEssence;
+    }
+
+    public void setBaseEssence(BaseEssence baseEssence) {
+        this.baseEssence = baseEssence;
     }
 
     public String getTitle() {

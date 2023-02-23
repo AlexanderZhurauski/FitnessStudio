@@ -1,7 +1,8 @@
 
 package org.mycompany.fitness.web.controllers;
 
-import org.mycompany.fitness.core.dto.*;
+import org.mycompany.fitness.core.dto.services.user.UserCreateDTO;
+import org.mycompany.fitness.core.dto.services.user.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;

@@ -1,8 +1,8 @@
 package org.mycompany.fitness.service;
 
 import jakarta.persistence.OptimisticLockException;
-import org.mycompany.fitness.core.dto.ProductCreateDTO;
-import org.mycompany.fitness.core.dto.ProductDTO;
+import org.mycompany.fitness.core.dto.services.product.ProductCreateDTO;
+import org.mycompany.fitness.core.dto.services.product.ProductDTO;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
 import org.mycompany.fitness.dao.entities.Product;
 import org.mycompany.fitness.dao.repositories.api.IProductRepository;
@@ -33,6 +33,12 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public Product getByID(UUID uuid) {
+        return this.productRepository.findById(uuid)
+                .orElseThrow(() -> new EntityNotFoundException(uuid, "product"));
+    }
+
+    @Override
     public ProductDTO update(UUID uuid, Long lastUpdated,
                              ProductCreateDTO productCreateDTO) {
 
@@ -40,7 +46,7 @@ public class ProductService implements IProductService {
                 .orElseThrow(() -> new EntityNotFoundException(uuid, "product"));
 
         if (product.getLastUpdated().toEpochMilli() != lastUpdated) {
-            throw new OptimisticLockException("User with id '" + product.getUuid()
+            throw new OptimisticLockException("Product with id '" + product.getUuid()
                     + "' has already been modified!");
         }
 

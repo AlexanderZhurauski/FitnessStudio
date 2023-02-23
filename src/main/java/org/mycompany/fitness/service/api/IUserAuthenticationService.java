@@ -1,8 +1,8 @@
 package org.mycompany.fitness.service.api;
 
-import org.mycompany.fitness.core.dto.UserDTO;
-import org.mycompany.fitness.core.dto.UserLoginDTO;
-import org.mycompany.fitness.core.dto.UserRegistrationDTO;
+import org.mycompany.fitness.core.dto.services.user.UserDTO;
+import org.mycompany.fitness.core.dto.services.user.UserLoginDTO;
+import org.mycompany.fitness.core.dto.services.user.UserRegistrationDTO;
 
 import java.util.UUID;
 
