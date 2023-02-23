@@ -63,7 +63,7 @@ public class RecipeService implements IRecipeService {
         recipe.setFats(updatedRecipe.getFats());
         recipe.setCarbohydrates(updatedRecipe.getCarbohydrates());
         this.recipeRepository.save(recipe);
-        
+
         return convertFromEntity(recipe);
     }
 
