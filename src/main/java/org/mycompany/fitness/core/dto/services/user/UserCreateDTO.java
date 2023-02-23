@@ -1,4 +1,4 @@
-package org.mycompany.fitness.core.dto;
+package org.mycompany.fitness.core.dto.services.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

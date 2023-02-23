@@ -1,4 +1,4 @@
-package org.mycompany.fitness.core.dto;
+package org.mycompany.fitness.core.dto.services.recipe;
 
 import java.util.Objects;
 import java.util.UUID;

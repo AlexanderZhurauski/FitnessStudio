@@ -1,7 +1,7 @@
 package org.mycompany.fitness.dao.entities;
 
 import jakarta.persistence.*;
-import org.mycompany.fitness.core.dto.ProductCreateDTO;
+import org.mycompany.fitness.core.dto.services.product.ProductCreateDTO;
 
 import java.time.Instant;
 import java.util.Objects;

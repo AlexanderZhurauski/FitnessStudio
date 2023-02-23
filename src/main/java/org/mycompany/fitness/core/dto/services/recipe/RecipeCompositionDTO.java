@@ -1,4 +1,6 @@
-package org.mycompany.fitness.core.dto;
+package org.mycompany.fitness.core.dto.services.recipe;
+
+import org.mycompany.fitness.core.dto.services.product.ProductDTO;
 
 import java.util.Objects;
 

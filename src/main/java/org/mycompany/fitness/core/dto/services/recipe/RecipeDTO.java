@@ -1,6 +1,7 @@
-package org.mycompany.fitness.core.dto;
+package org.mycompany.fitness.core.dto.services.recipe;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.mycompany.fitness.core.dto.BaseEssence;
 
 import java.util.ArrayList;
 import java.util.List;

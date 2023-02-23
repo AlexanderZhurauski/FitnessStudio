@@ -1,8 +1,8 @@
 package org.mycompany.fitness.service;
 
 import jakarta.persistence.OptimisticLockException;
-import org.mycompany.fitness.core.dto.UserCreateDTO;
-import org.mycompany.fitness.core.dto.UserDTO;
+import org.mycompany.fitness.core.dto.services.user.UserCreateDTO;
+import org.mycompany.fitness.core.dto.services.user.UserDTO;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
 import org.mycompany.fitness.dao.entities.User;
 import org.mycompany.fitness.dao.repositories.api.IUserRepository;
