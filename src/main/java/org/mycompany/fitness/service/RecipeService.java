@@ -54,9 +54,16 @@ public class RecipeService implements IRecipeService {
                     + "' has already been modified!");
         }
 
-        recipe.setTitle(recipeCreateDTO.getTitle());
-
+        Recipe updatedRecipe = convertToEntity(recipeCreateDTO);
+        recipe.setTitle(updatedRecipe.getTitle());
+        recipe.setComposition(updatedRecipe.getComposition());
+        recipe.setWeight(updatedRecipe.getWeight());
+        recipe.setCalories(updatedRecipe.getCalories());
+        recipe.setProteins(updatedRecipe.getProteins());
+        recipe.setFats(updatedRecipe.getFats());
+        recipe.setCarbohydrates(updatedRecipe.getCarbohydrates());
         this.recipeRepository.save(recipe);
+        
         return convertFromEntity(recipe);
     }
 
