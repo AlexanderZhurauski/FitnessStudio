@@ -37,44 +37,14 @@ public class RecipeConverter implements IEntityConverter<Recipe, RecipeCreateDTO
                 .map(dto -> {
                     Product product = this.productService.getByID(dto.getProduct());
                     ProductInstance productInstance = new ProductInstance();
-                    double ratio = 1.0 * dto.getWeight() / product.getWeight();
 
                     productInstance.setProduct(product);
                     productInstance.setWeight(dto.getWeight());
-                    productInstance.setCalories((int) (ratio * product.getCalories()));
-                    productInstance.setProteins(round(ratio
-                            * product.getProteins(), 1));
-                    productInstance.setFats(round(ratio
-                            * product.getFats(), 1));
-                    productInstance.setCarbohydrates(round(ratio
-                            * product.getCarbohydrates(), 1));
 
                     return productInstance;
                 })
                 .collect(Collectors.toList());
         recipe.setComposition(productList);
-
-        int weight = productList.stream()
-                .mapToInt(ProductInstance::getWeight)
-                .sum();
-        int calories = productList.stream()
-                .mapToInt(ProductInstance::getCalories)
-                .sum();
-        double proteins = productList.stream()
-                .mapToDouble(ProductInstance::getProteins)
-                .sum();
-        double fats = productList.stream()
-                .mapToDouble(ProductInstance::getFats)
-                .sum();
-        double carbohydrates = productList.stream()
-                .mapToDouble(ProductInstance::getCarbohydrates)
-                .sum();
-
-        recipe.setWeight(weight);
-        recipe.setCalories(calories);
-        recipe.setProteins(proteins);
-        recipe.setFats(fats);
-        recipe.setCarbohydrates(carbohydrates);
 
         return recipe;
     }
@@ -88,16 +58,66 @@ public class RecipeConverter implements IEntityConverter<Recipe, RecipeCreateDTO
         recipeDTO.setTitle(recipe.getTitle());
 
         List<ProductInstance> productList = recipe.getComposition();
-        List<RecipeCompositionDTO> productComposition = productList.stream()
-                .map(product -> new RecipeCompositionDTO(productConverter.convertFromEntity(product.getProduct()),
-                        product.getWeight(), product.getCalories(), product.getProteins(),
-                        product.getFats(), product.getCarbohydrates()))
-                .toList();
+        List<RecipeCompositionDTO> productComposition = calculateRecipeComposition(productList);
         recipeDTO.setComposition(productComposition);
+
+        int weight = productComposition
+                .stream()
+                .mapToInt(RecipeCompositionDTO::getWeight)
+                .sum();
+        int calories = productComposition
+                .stream()
+                .mapToInt(RecipeCompositionDTO::getCalories)
+                .sum();
+        double proteins = productComposition
+                .stream()
+                .mapToDouble(RecipeCompositionDTO::getProteins)
+                .sum();
+        double fats = productComposition
+                .stream()
+                .mapToDouble(RecipeCompositionDTO::getFats)
+                .sum();
+        double carbohydrates = productComposition
+                .stream()
+                .mapToDouble(RecipeCompositionDTO::getCarbohydrates)
+                .sum();
+
+        recipeDTO.setWeight(weight);
+        recipeDTO.setCalories(calories);
+        recipeDTO.setProteins(proteins);
+        recipeDTO.setFats(fats);
+        recipeDTO.setCarbohydrates(carbohydrates);
 
         return  recipeDTO;
     }
 
+    private List<RecipeCompositionDTO> calculateRecipeComposition(List<ProductInstance> productList) {
+        List<RecipeCompositionDTO> recipeComposition = productList.stream()
+                .map(product -> {
+                    RecipeCompositionDTO compositionDTO = new RecipeCompositionDTO();
+
+                    ProductDTO productDTO = productConverter.convertFromEntity(product.getProduct());
+                    int actualWeight = product.getWeight();
+                    int standardWeight = productDTO.getWeight();
+                    double ratio = 1.0 * actualWeight / standardWeight;
+                    int calories = (int) (ratio * productDTO.getCalories());
+                    double proteins = round(ratio * productDTO.getProteins(),1);
+                    double fats = round(ratio * productDTO.getFats(), 1);
+                    double carbohydrates = round(ratio * productDTO.getCarbohydrates(), 1);
+
+                    compositionDTO.setProduct(productDTO);
+                    compositionDTO.setWeight(actualWeight);
+                    compositionDTO.setCalories(calories);
+                    compositionDTO.setProteins(proteins);
+                    compositionDTO.setFats(fats);
+                    compositionDTO.setCarbohydrates(carbohydrates);
+
+                    return compositionDTO;
+                })
+                .toList();
+
+        return recipeComposition;
+    }
     private double round(double number, int places) {
         if (places < 1 || places > 1000) {
             throw new IllegalArgumentException("Can't round to '"

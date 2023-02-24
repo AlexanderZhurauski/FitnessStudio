@@ -1,9 +1,6 @@
 package org.mycompany.fitness.core.dto.services.recipe;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import org.mycompany.fitness.core.dto.BaseEssence;
 
 import java.util.ArrayList;
@@ -16,14 +13,26 @@ public class RecipeDTO {
     private String title;
     private List<RecipeCompositionDTO> composition;
 
+    private int weight;
+    private int calories;
+    private double proteins;
+    private double fats;
+    private double carbohydrates;
     public RecipeDTO() {
     }
 
     public RecipeDTO(BaseEssence baseEssence, String title,
-                     List<RecipeCompositionDTO> composition) {
+                     List<RecipeCompositionDTO> composition, int weight,
+                     int calories, double proteins,
+                     double fats, double carbohydrates) {
         this.baseEssence = baseEssence;
         this.title = title;
         this.composition = composition;
+        this.weight = weight;
+        this.calories = calories;
+        this.proteins = proteins;
+        this.fats = fats;
+        this.carbohydrates = carbohydrates;
     }
 
     public BaseEssence getBaseEssence() {
@@ -43,11 +52,51 @@ public class RecipeDTO {
     }
 
     public List<RecipeCompositionDTO> getComposition() {
-        return this.composition != null ? this.composition : new ArrayList<>();
+        return composition;
     }
 
     public void setComposition(List<RecipeCompositionDTO> composition) {
         this.composition = composition;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+
+    public double getProteins() {
+        return proteins;
+    }
+
+    public void setProteins(double proteins) {
+        this.proteins = proteins;
+    }
+
+    public double getFats() {
+        return fats;
+    }
+
+    public void setFats(double fats) {
+        this.fats = fats;
+    }
+
+    public double getCarbohydrates() {
+        return carbohydrates;
+    }
+
+    public void setCarbohydrates(double carbohydrates) {
+        this.carbohydrates = carbohydrates;
     }
 
     public void addRecipe(RecipeCompositionDTO recipe) {
