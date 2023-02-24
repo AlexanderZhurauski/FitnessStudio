@@ -2,7 +2,6 @@ package org.mycompany.fitness.dao.entities;
 
 
 
-import org.mycompany.fitness.core.dto.services.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.enums.UserRole;
 import org.mycompany.fitness.core.dto.enums.UserStatus;
 
@@ -42,14 +41,6 @@ public class User {
         this.fullName = fullName;
         this.role = role;
         this.status = status;
-    }
-
-    public User(UserCreateDTO userCreateDTO) {
-        this.mail = userCreateDTO.getMail();
-        this.password = userCreateDTO.getPassword();
-        this.fullName = userCreateDTO.getFullName();
-        this.role = userCreateDTO.getRole();
-        this.status = userCreateDTO.getStatus();
     }
 
     public UUID getUuid() {

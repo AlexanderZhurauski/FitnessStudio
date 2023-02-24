@@ -2,7 +2,6 @@ package org.mycompany.fitness.core.dto.services.product;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.mycompany.fitness.core.dto.BaseEssence;
-import org.mycompany.fitness.dao.entities.Product;
 
 public class ProductDTO {
     @JsonUnwrapped
@@ -27,17 +26,6 @@ public class ProductDTO {
         this.proteins = proteins;
         this.fats = fats;
         this.carbohydrates = carbohydrates;
-    }
-
-    public ProductDTO(Product product) {
-        this.baseEssence = new BaseEssence(product.getUuid(),
-                product.getCreationTime(), product.getLastUpdated());
-        this.title = product.getTitle();
-        this.weight = product.getWeight();
-        this.calories = product.getCalories();
-        this.proteins = product.getProteins();
-        this.fats = product.getFats();
-        this.carbohydrates = product.getCarbohydrates();
     }
 
     public BaseEssence getBaseEssence() {

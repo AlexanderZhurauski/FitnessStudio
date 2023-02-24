@@ -1,7 +1,6 @@
 package org.mycompany.fitness.dao.entities;
 
 import jakarta.persistence.*;
-import org.mycompany.fitness.core.dto.services.product.ProductCreateDTO;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -38,15 +37,6 @@ public class Product {
         this.proteins = proteins;
         this.fats = fats;
         this.carbohydrates = carbohydrates;
-    }
-
-    public Product(ProductCreateDTO productCreateDTO) {
-        this.title = productCreateDTO.getTitle();
-        this.weight = productCreateDTO.getWeight();
-        this.calories = productCreateDTO.getCalories();
-        this.proteins = productCreateDTO.getProteins();
-        this.fats = productCreateDTO.getFats();
-        this.carbohydrates = productCreateDTO.getCarbohydrates();
     }
 
     public UUID getUuid() {
