@@ -26,7 +26,7 @@ public class Recipe {
             schema = "app",
             name = "recipe_product",
             joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
+            inverseJoinColumns = @JoinColumn(name = "product_instance_id"))
     private List<ProductInstance> composition;
     @NotBlank
     @NotNull

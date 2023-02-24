@@ -4,8 +4,6 @@ package org.mycompany.fitness.dao.entities;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.mycompany.fitness.core.dto.enums.UserRole;
-import org.mycompany.fitness.core.dto.enums.UserStatus;
 
 import jakarta.persistence.*;
 
@@ -34,16 +32,16 @@ public class User {
     @NotBlank
     @NotNull
     private	String fullName;
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
-    @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    @ManyToOne
+    private Role role;
+    @ManyToOne
+    private Status status;
 
     public User() {
     }
 
     public User(String mail, String password, String fullName,
-                UserRole role, UserStatus status) {
+                Role role, Status status) {
         this.mail = mail;
         this.password = password;
         this.fullName = fullName;
@@ -99,19 +97,19 @@ public class User {
         this.fullName = fullName;
     }
 
-    public UserRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public UserStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(UserStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }
