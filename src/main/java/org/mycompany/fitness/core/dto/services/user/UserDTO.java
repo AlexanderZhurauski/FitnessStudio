@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.mycompany.fitness.core.dto.BaseEssence;
 import org.mycompany.fitness.core.dto.enums.UserRole;
 import org.mycompany.fitness.core.dto.enums.UserStatus;
-import org.mycompany.fitness.dao.entities.User;
 
 @JsonPropertyOrder({
         "baseEssence",
@@ -26,16 +25,6 @@ public class UserDTO {
     private UserStatus status;
 
     public UserDTO() {
-    }
-
-    public UserDTO(User user) {
-        BaseEssence base = new BaseEssence(user.getUuid(),
-                user.getCreationTime(), user.getLastUpdated());
-        this.baseEssence = base;
-        this.mail = user.getMail();
-        this.fullName = user.getFullName();
-        this.role = user.getRole();
-        this.status = user.getStatus();
     }
 
     public UserDTO(BaseEssence baseEssence, String mail,

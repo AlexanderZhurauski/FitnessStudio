@@ -1,13 +1,23 @@
 package org.mycompany.fitness.core.dto.services.product;
 
 
-public class ProductCreateDTO {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
+public class ProductCreateDTO {
+    @NotBlank
+    @NotNull
     private String title;
+    @Positive
     private int weight;
+    @Positive
     private int calories;
+    @Positive
     private double proteins;
+    @Positive
     private double fats;
+    @Positive
     private double carbohydrates;
 
     public ProductCreateDTO() {

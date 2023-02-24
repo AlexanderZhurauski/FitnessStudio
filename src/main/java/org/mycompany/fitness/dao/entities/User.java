@@ -2,9 +2,8 @@ package org.mycompany.fitness.dao.entities;
 
 
 
-import org.mycompany.fitness.core.dto.services.user.UserCreateDTO;
-import org.mycompany.fitness.core.dto.enums.UserRole;
-import org.mycompany.fitness.core.dto.enums.UserStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import jakarta.persistence.*;
 
@@ -23,33 +22,31 @@ public class User {
     @Column(name = "last_updated", nullable = false)
     @Version
     private Instant lastUpdated = Instant.now();
+    @NotBlank
+    @NotNull
     private	String mail;
+    @NotBlank
+    @NotNull
     private String password;
     @Column(name = "full_name")
+    @NotBlank
+    @NotNull
     private	String fullName;
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
-    @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    @ManyToOne
+    private Role role;
+    @ManyToOne
+    private Status status;
 
     public User() {
     }
 
     public User(String mail, String password, String fullName,
-                UserRole role, UserStatus status) {
+                Role role, Status status) {
         this.mail = mail;
         this.password = password;
         this.fullName = fullName;
         this.role = role;
         this.status = status;
-    }
-
-    public User(UserCreateDTO userCreateDTO) {
-        this.mail = userCreateDTO.getMail();
-        this.password = userCreateDTO.getPassword();
-        this.fullName = userCreateDTO.getFullName();
-        this.role = userCreateDTO.getRole();
-        this.status = userCreateDTO.getStatus();
     }
 
     public UUID getUuid() {
@@ -100,19 +97,19 @@ public class User {
         this.fullName = fullName;
     }
 
-    public UserRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public UserStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(UserStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

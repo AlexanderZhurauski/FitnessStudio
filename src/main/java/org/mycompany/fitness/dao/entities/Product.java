@@ -1,7 +1,9 @@
 package org.mycompany.fitness.dao.entities;
 
 import jakarta.persistence.*;
-import org.mycompany.fitness.core.dto.services.product.ProductCreateDTO;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -20,11 +22,18 @@ public class Product {
     @Column(name = "last_updated", nullable = false)
     @Version
     private Instant lastUpdated = Instant.now();
+    @NotBlank
+    @NotNull
     private String title;
+    @Positive
     private int weight;
+    @Positive
     private int calories;
+    @Positive
     private double proteins;
+    @Positive
     private double fats;
+    @Positive
     private double carbohydrates;
 
     public Product() {
@@ -38,15 +47,6 @@ public class Product {
         this.proteins = proteins;
         this.fats = fats;
         this.carbohydrates = carbohydrates;
-    }
-
-    public Product(ProductCreateDTO productCreateDTO) {
-        this.title = productCreateDTO.getTitle();
-        this.weight = productCreateDTO.getWeight();
-        this.calories = productCreateDTO.getCalories();
-        this.proteins = productCreateDTO.getProteins();
-        this.fats = productCreateDTO.getFats();
-        this.carbohydrates = productCreateDTO.getCarbohydrates();
     }
 
     public UUID getUuid() {

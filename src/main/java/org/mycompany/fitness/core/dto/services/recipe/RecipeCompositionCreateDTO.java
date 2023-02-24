@@ -1,11 +1,15 @@
 package org.mycompany.fitness.core.dto.services.recipe;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.util.Objects;
 import java.util.UUID;
 
 public class RecipeCompositionCreateDTO {
-
+    @NotNull
     private UUID product;
+    @Positive
     private int weight;
 
     public RecipeCompositionCreateDTO() {
