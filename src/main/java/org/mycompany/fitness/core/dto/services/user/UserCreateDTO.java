@@ -2,6 +2,9 @@ package org.mycompany.fitness.core.dto.services.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.mycompany.fitness.core.dto.enums.UserRole;
 import org.mycompany.fitness.core.dto.enums.UserStatus;
 
@@ -14,10 +17,18 @@ import org.mycompany.fitness.core.dto.enums.UserStatus;
 })
 public class UserCreateDTO {
 
+    @Pattern(regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
+    @NotNull
     private String mail;
+    @NotBlank
+    @NotNull
     private String fullName;
+    @NotNull
     private UserRole role;
+    @NotNull
     private UserStatus status;
+    @NotBlank
+    @NotNull
     private String password;
 
     public UserCreateDTO() {

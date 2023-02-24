@@ -3,18 +3,22 @@ package org.mycompany.fitness.core.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jakarta.validation.constraints.NotNull;
 import org.mycompany.fitness.core.dto.converters.InstantToUnix;
 import org.mycompany.fitness.core.dto.converters.UnixToInstant;
 
 import java.time.Instant;
 import java.util.UUID;
 public class BaseEssence {
+    @NotNull
     private UUID uuid;
     @JsonSerialize(converter = InstantToUnix.class)
     @JsonDeserialize(converter = UnixToInstant.class)
+    @NotNull
     private Instant creationTime;
     @JsonSerialize(converter = InstantToUnix.class)
     @JsonDeserialize(converter = UnixToInstant.class)
+    @NotNull
     private Instant lastUpdated;
 
     public BaseEssence() {

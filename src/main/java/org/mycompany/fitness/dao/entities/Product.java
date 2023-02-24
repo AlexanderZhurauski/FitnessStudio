@@ -1,6 +1,9 @@
 package org.mycompany.fitness.dao.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -19,11 +22,18 @@ public class Product {
     @Column(name = "last_updated", nullable = false)
     @Version
     private Instant lastUpdated = Instant.now();
+    @NotBlank
+    @NotNull
     private String title;
+    @Positive
     private int weight;
+    @Positive
     private int calories;
+    @Positive
     private double proteins;
+    @Positive
     private double fats;
+    @Positive
     private double carbohydrates;
 
     public Product() {

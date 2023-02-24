@@ -1,6 +1,7 @@
 package org.mycompany.fitness.dao.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 
 import java.util.UUID;
 @Entity
@@ -13,11 +14,15 @@ public class ProductInstance {
     private UUID uuid;
     @ManyToOne
     private Product product;
-
+    @Positive
     private int weight;
+    @Positive
     private int calories;
+    @Positive
     private double proteins;
+    @Positive
     private double fats;
+    @Positive
     private double carbohydrates;
 
     public ProductInstance() {

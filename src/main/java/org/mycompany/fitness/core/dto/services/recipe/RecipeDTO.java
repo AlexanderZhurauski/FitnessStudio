@@ -1,6 +1,9 @@
 package org.mycompany.fitness.core.dto.services.recipe;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.mycompany.fitness.core.dto.BaseEssence;
 
 import java.util.ArrayList;

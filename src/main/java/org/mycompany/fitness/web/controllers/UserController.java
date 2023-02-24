@@ -1,6 +1,8 @@
 
 package org.mycompany.fitness.web.controllers;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.mycompany.fitness.core.dto.services.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.services.user.UserDTO;
 import org.springframework.data.domain.Page;
@@ -22,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UUID> createUser(@RequestBody UserCreateDTO user) {
+    public ResponseEntity<UUID> createUser(@Valid @RequestBody UserCreateDTO user) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(this.service.create(user));
@@ -39,8 +41,8 @@ public class UserController {
 
     @PutMapping("/{uuid}/dt_update/{lastUpdated}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable UUID uuid,
-                                             @PathVariable Long lastUpdated,
-                                             @RequestBody UserCreateDTO user) {
+                                              @PathVariable @Positive Long lastUpdated,
+                                             @Valid @RequestBody UserCreateDTO user) {
 
         return ResponseEntity.ok(this.service.update(uuid, lastUpdated, user));
     }

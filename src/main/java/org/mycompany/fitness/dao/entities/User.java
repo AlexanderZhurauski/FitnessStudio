@@ -2,6 +2,8 @@ package org.mycompany.fitness.dao.entities;
 
 
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.mycompany.fitness.core.dto.enums.UserRole;
 import org.mycompany.fitness.core.dto.enums.UserStatus;
 
@@ -22,9 +24,15 @@ public class User {
     @Column(name = "last_updated", nullable = false)
     @Version
     private Instant lastUpdated = Instant.now();
+    @NotBlank
+    @NotNull
     private	String mail;
+    @NotBlank
+    @NotNull
     private String password;
     @Column(name = "full_name")
+    @NotBlank
+    @NotNull
     private	String fullName;
     @Enumerated(EnumType.STRING)
     private UserRole role;
