@@ -19,6 +19,7 @@ import org.mycompany.fitness.core.dto.enums.UserStatus;
 public class UserCreateDTO {
 
     @Email(message = "Invalid email format!")
+    @NotBlank(message = "The email cannot be blank!")
     @NotNull(message = "No email has been provided!")
     private String mail;
     @NotBlank(message = "The full name cannot be blank!")
