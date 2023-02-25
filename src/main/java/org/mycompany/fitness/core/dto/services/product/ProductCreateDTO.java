@@ -6,18 +6,18 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public class ProductCreateDTO {
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "The title cannot be blank!")
+    @NotNull(message = "No title has been provided!")
     private String title;
-    @Positive
+    @Positive(message = "The weight value must be positive!")
     private int weight;
-    @Positive
+    @Positive(message = "The calorie value must be positive!")
     private int calories;
-    @Positive
+    @Positive(message = "The protein value must be positive!")
     private double proteins;
-    @Positive
+    @Positive(message = "The fat value must be positive!")
     private double fats;
-    @Positive
+    @Positive(message = "The carbohydrate value must be positive!")
     private double carbohydrates;
 
     public ProductCreateDTO() {

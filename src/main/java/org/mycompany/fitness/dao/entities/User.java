@@ -2,6 +2,7 @@ package org.mycompany.fitness.dao.entities;
 
 
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -22,19 +23,21 @@ public class User {
     @Column(name = "last_updated", nullable = false)
     @Version
     private Instant lastUpdated = Instant.now();
-    @NotBlank
-    @NotNull
+    @Email(message = "Invalid email format!")
+    @NotNull(message = "No email has been provided!")
     private	String mail;
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "The password cannot be blank!")
+    @NotNull(message = "No password has been provided!")
     private String password;
     @Column(name = "full_name")
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "The full name cannot be blank!")
+    @NotNull(message = "No full name has been provided!")
     private	String fullName;
     @ManyToOne
+    @NotNull(message = "No user role has been provided!")
     private Role role;
     @ManyToOne
+    @NotNull(message = "No user status has been provided!")
     private Status status;
 
     public User() {

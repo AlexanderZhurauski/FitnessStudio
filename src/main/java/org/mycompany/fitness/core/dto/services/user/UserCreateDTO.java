@@ -2,6 +2,7 @@ package org.mycompany.fitness.core.dto.services.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -17,18 +18,18 @@ import org.mycompany.fitness.core.dto.enums.UserStatus;
 })
 public class UserCreateDTO {
 
-    @Pattern(regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
-    @NotNull
+    @Email(message = "Invalid email format!")
+    @NotNull(message = "No email has been provided!")
     private String mail;
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "The full name cannot be blank!")
+    @NotNull(message = "No full name has been provided!")
     private String fullName;
-    @NotNull
+    @NotNull(message = "No user role has been provided!")
     private UserRole role;
-    @NotNull
+    @NotNull(message = "No user status has been provided!")
     private UserStatus status;
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "The password cannot be blank!")
+    @NotNull(message = "No password has been provided!")
     private String password;
 
     public UserCreateDTO() {

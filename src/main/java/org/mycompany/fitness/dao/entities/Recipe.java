@@ -3,6 +3,7 @@ package org.mycompany.fitness.dao.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
 import java.util.List;
@@ -26,9 +27,11 @@ public class Recipe {
             name = "recipe_product",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "product_instance_id"))
+    @Size(min = 1, message = "A recipe must contain at least one ingredient!")
+    @NotNull(message = "No recipe composition has been provided!")
     private List<ProductInstance> composition;
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "The title cannot be blank!")
+    @NotNull(message = "No title has been provided!")
     private String title;
 
     public Recipe() {

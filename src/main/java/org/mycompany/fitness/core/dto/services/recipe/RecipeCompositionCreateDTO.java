@@ -7,9 +7,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class RecipeCompositionCreateDTO {
-    @NotNull
+    @NotNull(message = "A recipe ingredient must have a valid product UUID!")
     private UUID product;
-    @Positive
+    @Positive(message = "The weight value must be positive!")
     private int weight;
 
     public RecipeCompositionCreateDTO() {

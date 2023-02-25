@@ -10,15 +10,15 @@ import org.mycompany.fitness.core.dto.converters.UnixToInstant;
 import java.time.Instant;
 import java.util.UUID;
 public class BaseEssence {
-    @NotNull
+    @NotNull(message = "UUID must be provided!")
     private UUID uuid;
     @JsonSerialize(converter = InstantToUnix.class)
     @JsonDeserialize(converter = UnixToInstant.class)
-    @NotNull
+    @NotNull(message = "Creation Time must be provided!")
     private Instant creationTime;
     @JsonSerialize(converter = InstantToUnix.class)
     @JsonDeserialize(converter = UnixToInstant.class)
-    @NotNull
+    @NotNull(message = "Last Updated must be provided!")
     private Instant lastUpdated;
 
     public BaseEssence() {

@@ -1,6 +1,7 @@
 package org.mycompany.fitness.dao.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.util.UUID;
@@ -13,8 +14,9 @@ public class ProductInstance {
     @GeneratedValue
     private UUID uuid;
     @ManyToOne
+    @NotNull(message = "No product has been provided!")
     private Product product;
-    @Positive
+    @Positive(message = "The weight value must be positive!")
     private int weight;
 
     public ProductInstance() {

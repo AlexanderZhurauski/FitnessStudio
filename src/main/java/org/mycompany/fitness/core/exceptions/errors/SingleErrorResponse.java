@@ -10,6 +10,10 @@ public class SingleErrorResponse {
         this.message = message;
     }
 
+    public SingleErrorResponse() {
+
+    }
+
     public String getLogref() {
         return logref;
     }
