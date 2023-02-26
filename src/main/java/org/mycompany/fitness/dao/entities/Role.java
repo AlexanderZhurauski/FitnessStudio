@@ -2,14 +2,16 @@ package org.mycompany.fitness.dao.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.mycompany.fitness.core.dto.enums.UserRole;
 
 @Entity
 @Table(schema = "app", name = "user_role")
 public class Role {
     @Id
+    @Positive(message = "Invalid ID provided: it must be positive!")
     private int id;
-    @NotNull
+    @NotNull(message = "No user role has been provided!")
     @Enumerated(EnumType.STRING)
     private UserRole role;
 

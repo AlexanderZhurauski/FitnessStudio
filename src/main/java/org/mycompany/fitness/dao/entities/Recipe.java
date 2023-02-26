@@ -3,7 +3,7 @@ package org.mycompany.fitness.dao.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
 import java.util.List;
@@ -27,40 +27,26 @@ public class Recipe {
             name = "recipe_product",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "product_instance_id"))
+    @Size(min = 1, message = "A recipe must contain at least one ingredient!")
+    @NotNull(message = "No recipe composition has been provided!")
     private List<ProductInstance> composition;
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "The title cannot be blank!")
+    @NotNull(message = "No title has been provided!")
     private String title;
-    @Positive
-    private int weight;
-    @Positive
-    private int calories;
-    @Positive
-    private double proteins;
-    @Positive
-    private double fats;
-    @Positive
-    private double carbohydrates;
 
     public Recipe() {
     }
 
     public Recipe(UUID uuid, Instant creationTime,
                   Instant lastUpdated, String title,
-                  int weight, int calories, double proteins,
-                  double fats, double carbohydrates,
                   List<ProductInstance> composition) {
         this.uuid = uuid;
         this.creationTime = creationTime;
         this.lastUpdated = lastUpdated;
         this.title = title;
-        this.weight = weight;
-        this.calories = calories;
-        this.proteins = proteins;
-        this.fats = fats;
-        this.carbohydrates = carbohydrates;
         this.composition = composition;
     }
+
     public UUID getUuid() {
         return uuid;
     }
@@ -99,45 +85,5 @@ public class Recipe {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
-    }
-
-    public double getProteins() {
-        return proteins;
-    }
-
-    public void setProteins(double proteins) {
-        this.proteins = proteins;
-    }
-
-    public double getFats() {
-        return fats;
-    }
-
-    public void setFats(double fats) {
-        this.fats = fats;
-    }
-
-    public double getCarbohydrates() {
-        return carbohydrates;
-    }
-
-    public void setCarbohydrates(double carbohydrates) {
-        this.carbohydrates = carbohydrates;
     }
 }

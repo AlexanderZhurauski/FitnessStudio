@@ -22,18 +22,19 @@ public class Product {
     @Column(name = "last_updated", nullable = false)
     @Version
     private Instant lastUpdated = Instant.now();
-    @NotBlank
-    @NotNull
+
+    @NotBlank(message = "The title cannot be blank!")
+    @NotNull(message = "No title has been provided!")
     private String title;
-    @Positive
+    @Positive(message = "The weight value must be positive!")
     private int weight;
-    @Positive
+    @Positive(message = "The calorie value must be positive!")
     private int calories;
-    @Positive
+    @Positive(message = "The protein value must be positive!")
     private double proteins;
-    @Positive
+    @Positive(message = "The fat value must be positive!")
     private double fats;
-    @Positive
+    @Positive(message = "The carbohydrate value must be positive!")
     private double carbohydrates;
 
     public Product() {

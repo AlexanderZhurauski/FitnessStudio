@@ -9,11 +9,11 @@ import java.util.List;
 
 public class RecipeCreateDTO {
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "The title cannot be blank!")
+    @NotNull(message = "No title has been provided!")
     private String title;
-    @Size(min = 1)
-    @NotNull
+    @Size(min = 1, message = "A recipe must contain at least one ingredient!")
+    @NotNull(message = "No recipe composition has been provided!")
     private List<RecipeCompositionCreateDTO> composition;
 
     public RecipeCreateDTO() {
