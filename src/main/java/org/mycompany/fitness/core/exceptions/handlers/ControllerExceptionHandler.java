@@ -21,13 +21,15 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
+    private static final String ERROR = "error";
+    private static final String STRUCTURED_ERROR = "structured error";
+
     @ExceptionHandler(MissingPathVariableException.class)
     public ResponseEntity<List<SingleErrorResponse>> handleMissingPathVariableException(
             MissingPathVariableException ex) {
         String message = "The required path variable '" + ex.getVariableName()
                 + "' is missing from the request URL.";
-        SingleErrorResponse errorResponse = new SingleErrorResponse(
-                "Missing path variable", message);
+        SingleErrorResponse errorResponse = new SingleErrorResponse(ERROR, message);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of(errorResponse));
     }
@@ -37,7 +39,7 @@ public class ControllerExceptionHandler {
             HttpMessageNotReadableException ex) {
 
         String message = "The request body is not readable or is missing required fields.";
-        SingleErrorResponse errorResponse = new SingleErrorResponse("Invalid request body",
+        SingleErrorResponse errorResponse = new SingleErrorResponse(ERROR,
                 message);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of(errorResponse));
@@ -55,7 +57,7 @@ public class ControllerExceptionHandler {
                         fieldError.getField()))
                 .collect(Collectors.toList());
 
-        errorResponse.setLogref("Client-side error: Invalid field data!");
+        errorResponse.setLogref(STRUCTURED_ERROR);
         errorResponse.setErrors(errorFields);
 
         return ResponseEntity.badRequest().body(errorResponse);
@@ -66,7 +68,7 @@ public class ControllerExceptionHandler {
     public ResponseEntity<List<SingleErrorResponse>> handleEntityNotFound(RuntimeException ex) {
         SingleErrorResponse errorResponse = new SingleErrorResponse();
         Throwable rootCause = NestedExceptionUtils.getMostSpecificCause(ex);
-        errorResponse.setLogref(rootCause.getClass().getSimpleName());
+        errorResponse.setLogref(ERROR);
         errorResponse.setMessage(rootCause.getMessage());
 
         return ResponseEntity.internalServerError().body(List.of(errorResponse));
