@@ -15,7 +15,7 @@ import org.mycompany.fitness.service.api.IUserDataService;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping(value = "/api/v1/users")
 public class UserController {
     private IUserDataService service;
 
