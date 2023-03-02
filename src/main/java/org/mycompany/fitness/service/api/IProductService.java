@@ -6,6 +6,7 @@ import org.mycompany.fitness.dao.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public interface IProductService {
@@ -13,5 +14,5 @@ public interface IProductService {
     UUID create(ProductCreateDTO productCreateDTO);
     Page<ProductDTO> getPage(Pageable pageable);
     Product getByID(UUID uuid);
-    ProductDTO update(UUID uuid, Long lastUpdated, ProductCreateDTO productCreateDTO);
+    ProductDTO update(UUID uuid, Instant lastUpdated, ProductCreateDTO productCreateDTO);
 }

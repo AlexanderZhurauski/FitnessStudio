@@ -34,4 +34,5 @@ public class ConverterConfig {
     public IEntityConverter<Recipe, RecipeCreateDTO, RecipeDTO> recipeConverter(IProductService productService) {
         return new RecipeConverter(productService, productConverter());
     }
+
 }

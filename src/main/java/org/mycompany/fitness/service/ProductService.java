@@ -11,6 +11,7 @@ import org.mycompany.fitness.service.converters.api.IEntityConverter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public class ProductService implements IProductService {
@@ -43,13 +44,13 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductDTO update(UUID uuid, Long lastUpdated,
+    public ProductDTO update(UUID uuid, Instant lastUpdated,
                              ProductCreateDTO productCreateDTO) {
 
         Product product = this.productRepository.findById(uuid)
                 .orElseThrow(() -> new EntityNotFoundException(uuid, "product"));
 
-        if (product.getLastUpdated().toEpochMilli() != lastUpdated) {
+        if (product.getLastUpdated().toEpochMilli() != lastUpdated.toEpochMilli()) {
             throw new OptimisticLockException("Product with id '" + product.getUuid()
                     + "' has already been modified!");
         }

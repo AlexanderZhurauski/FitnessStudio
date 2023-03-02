@@ -61,26 +61,26 @@ public class RecipeConverter implements IEntityConverter<Recipe, RecipeCreateDTO
         List<RecipeCompositionDTO> productComposition = calculateRecipeComposition(productList);
         recipeDTO.setComposition(productComposition);
 
-        int weight = productComposition
+        int weight = (int) round(productComposition
                 .stream()
                 .mapToInt(RecipeCompositionDTO::getWeight)
-                .sum();
-        int calories = productComposition
+                .sum(), 2);
+        int calories = (int) round(productComposition
                 .stream()
                 .mapToInt(RecipeCompositionDTO::getCalories)
-                .sum();
-        double proteins = productComposition
+                .sum(), 2);
+        double proteins = round(productComposition
                 .stream()
                 .mapToDouble(RecipeCompositionDTO::getProteins)
-                .sum();
-        double fats = productComposition
+                .sum(), 2);
+        double fats = round(productComposition
                 .stream()
                 .mapToDouble(RecipeCompositionDTO::getFats)
-                .sum();
-        double carbohydrates = productComposition
+                .sum(), 2);
+        double carbohydrates = round(productComposition
                 .stream()
                 .mapToDouble(RecipeCompositionDTO::getCarbohydrates)
-                .sum();
+                .sum(), 2);
 
         recipeDTO.setWeight(weight);
         recipeDTO.setCalories(calories);
