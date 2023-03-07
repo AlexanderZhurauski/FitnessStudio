@@ -10,6 +10,7 @@ import org.mycompany.fitness.dao.entities.Recipe;
 import org.mycompany.fitness.dao.entities.User;
 import org.mycompany.fitness.dao.repositories.IProductRepository;
 import org.mycompany.fitness.dao.repositories.IRecipeRepository;
+import org.mycompany.fitness.dao.repositories.IUserAuthenticationRepository;
 import org.mycompany.fitness.dao.repositories.IUserDataRepository;
 import org.mycompany.fitness.service.ProductService;
 import org.mycompany.fitness.service.RecipeService;
@@ -17,11 +18,12 @@ import org.mycompany.fitness.service.UserAuthenticationService;
 import org.mycompany.fitness.service.UserDataService;
 import org.mycompany.fitness.service.api.IProductService;
 import org.mycompany.fitness.service.api.IRecipeService;
-import org.mycompany.fitness.service.api.IUserAuthenticationService;
 import org.mycompany.fitness.service.api.IUserDataService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ServiceConfig {
@@ -29,15 +31,15 @@ public class ServiceConfig {
     @Bean
     public IUserDataService userDataService(IUserDataRepository userRepository,
                                             Converter<UserCreateDTO, User> toEntityConverter,
-                                            Converter<User, UserDTO> toDTOConverter) {
+                                            Converter<User, UserDTO> toDTOConverter,
+                                            PasswordEncoder passwordEncoder) {
 
-        return new UserDataService(userRepository, toEntityConverter, toDTOConverter);
+        return new UserDataService(userRepository, toEntityConverter, toDTOConverter, passwordEncoder);
     }
 
     @Bean
-    public IUserAuthenticationService userAuthenticationService(IUserDataService userDataService) {
-
-        return new UserAuthenticationService(userDataService);
+    public UserDetailsService userDetailsService(IUserAuthenticationRepository userAuthenticationRepository) {
+        return new UserAuthenticationService(userAuthenticationRepository);
     }
 
     @Bean

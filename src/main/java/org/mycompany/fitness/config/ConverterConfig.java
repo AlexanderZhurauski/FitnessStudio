@@ -14,6 +14,7 @@ import org.mycompany.fitness.service.api.IProductService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ConverterConfig {
@@ -24,8 +25,8 @@ public class ConverterConfig {
     }
 
     @Bean
-    public Converter<UserCreateDTO, User> userToEntityConverter() {
-        return new UserToEntityConverter();
+    public Converter<UserCreateDTO, User> userToEntityConverter(PasswordEncoder passwordEncoder) {
+        return new UserToEntityConverter(passwordEncoder);
     }
 
     @Bean

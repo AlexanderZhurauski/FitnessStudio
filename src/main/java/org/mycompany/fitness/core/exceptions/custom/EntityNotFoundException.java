@@ -9,6 +9,7 @@ public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(UUID id, String entityName) {
         super("No " + entityName + " with id '" + id + "' has been found!");
         this.id = id;
+        this.entityName = entityName;
     }
 
     public UUID getId() {
