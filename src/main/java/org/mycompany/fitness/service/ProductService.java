@@ -7,7 +7,7 @@ import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
 import org.mycompany.fitness.dao.entities.Product;
 import org.mycompany.fitness.dao.repositories.api.IProductRepository;
 import org.mycompany.fitness.service.api.IProductService;
-import org.mycompany.fitness.service.converters.api.IEntityConverter;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,24 +16,27 @@ import java.util.UUID;
 public class ProductService implements IProductService {
 
     private IProductRepository productRepository;
-    private IEntityConverter<Product, ProductCreateDTO, ProductDTO> converter;
+    private Converter<ProductCreateDTO, Product> toEntityConverter;
+    private Converter<Product, ProductDTO> toDTOConverter;
 
     public ProductService(IProductRepository productRepository,
-                          IEntityConverter<Product, ProductCreateDTO, ProductDTO> converter) {
+                          Converter<ProductCreateDTO, Product> toEntityConverter,
+                          Converter<Product, ProductDTO> toDTOConverter) {
         this.productRepository = productRepository;
-        this.converter = converter;
+        this.toEntityConverter = toEntityConverter;
+        this.toDTOConverter = toDTOConverter;
     }
 
     @Override
     public UUID create(ProductCreateDTO productCreateDTO) {
-        Product product = converter.convertToEntity(productCreateDTO);
+        Product product = toEntityConverter.convert(productCreateDTO);
         return this.productRepository.save(product).getUuid();
     }
 
     @Override
     public Page<ProductDTO> getPage(Pageable pageable) {
         Page<Product> productPage = this.productRepository.findAll(pageable);
-        return productPage.map(converter::convertFromEntity);
+        return productPage.map(toDTOConverter::convert);
     }
 
     @Override
@@ -62,6 +65,6 @@ public class ProductService implements IProductService {
         product.setWeight(productCreateDTO.getWeight());
         this.productRepository.save(product);
 
-        return converter.convertFromEntity(product);
+        return toDTOConverter.convert(product);
     }
 }

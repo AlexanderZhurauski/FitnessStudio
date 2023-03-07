@@ -10,28 +10,41 @@ import org.mycompany.fitness.dao.entities.Product;
 import org.mycompany.fitness.dao.entities.Recipe;
 import org.mycompany.fitness.dao.entities.User;
 import org.mycompany.fitness.service.api.IProductService;
-import org.mycompany.fitness.service.converters.ProductConverter;
-import org.mycompany.fitness.service.converters.RecipeConverter;
-import org.mycompany.fitness.service.converters.UserConverter;
-import org.mycompany.fitness.service.converters.api.IEntityConverter;
+import org.mycompany.fitness.service.converters.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 
 @Configuration
 public class ConverterConfig {
 
     @Bean
-    public IEntityConverter<User, UserCreateDTO, UserDTO> userConverter() {
-        return new UserConverter();
+    public Converter<User, UserDTO> userToDTOConverter() {
+        return new UserToDTOConverter();
     }
 
     @Bean
-    public IEntityConverter<Product, ProductCreateDTO, ProductDTO> productConverter() {
-        return new ProductConverter();
+    public Converter<UserCreateDTO, User> userToEntityConverter() {
+        return new UserToEntityConverter();
     }
 
     @Bean
-    public IEntityConverter<Recipe, RecipeCreateDTO, RecipeDTO> recipeConverter(IProductService productService) {
-        return new RecipeConverter(productService, productConverter());
+    public Converter<Product, ProductDTO> productToDTOConverter() {
+        return new ProductToDTOConverter();
+    }
+
+    @Bean
+    public Converter<ProductCreateDTO, Product> productToEntityConverter() {
+        return new ProductToEntityConverter();
+    }
+
+    @Bean
+    public Converter<Recipe, RecipeDTO> recipeToDTOConverter() {
+        return new RecipeToDTOConverter(productToDTOConverter());
+    }
+
+    @Bean
+    public Converter<RecipeCreateDTO, Recipe> recipeToEntityConverter(IProductService productService) {
+        return new RecipeToEntityConverter(productService);
     }
 }

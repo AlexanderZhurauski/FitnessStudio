@@ -1,56 +1,25 @@
 package org.mycompany.fitness.service.converters;
 
 import org.mycompany.fitness.core.dto.BaseEssence;
-import org.mycompany.fitness.core.dto.services.product.ProductCreateDTO;
 import org.mycompany.fitness.core.dto.services.product.ProductDTO;
-import org.mycompany.fitness.core.dto.services.recipe.RecipeCompositionCreateDTO;
 import org.mycompany.fitness.core.dto.services.recipe.RecipeCompositionDTO;
-import org.mycompany.fitness.core.dto.services.recipe.RecipeCreateDTO;
 import org.mycompany.fitness.core.dto.services.recipe.RecipeDTO;
 import org.mycompany.fitness.dao.entities.Product;
 import org.mycompany.fitness.dao.entities.ProductInstance;
 import org.mycompany.fitness.dao.entities.Recipe;
-import org.mycompany.fitness.service.api.IProductService;
-import org.mycompany.fitness.service.converters.api.IEntityConverter;
+import org.springframework.core.convert.converter.Converter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class RecipeConverter implements IEntityConverter<Recipe, RecipeCreateDTO, RecipeDTO> {
+public class RecipeToDTOConverter implements Converter<Recipe, RecipeDTO> {
 
-    private IProductService productService;
-    private IEntityConverter<Product, ProductCreateDTO, ProductDTO> productConverter;
+    private Converter<Product, ProductDTO> productToDTOConverter;
 
-    public RecipeConverter(IProductService productService,
-                           IEntityConverter<Product, ProductCreateDTO, ProductDTO> productConverter) {
-        this.productService = productService;
-        this.productConverter = productConverter;
+    public RecipeToDTOConverter(Converter<Product, ProductDTO> productToDTOConverter) {
+        this.productToDTOConverter = productToDTOConverter;
     }
-
     @Override
-    public Recipe convertToEntity(RecipeCreateDTO recipeCreateDTO) {
-        Recipe recipe = new Recipe();
-        recipe.setTitle(recipeCreateDTO.getTitle());
-
-        List<RecipeCompositionCreateDTO> recipeComposition = recipeCreateDTO.getComposition();
-        List<ProductInstance> productList = recipeComposition.stream()
-                .map(dto -> {
-                    Product product = this.productService.getByID(dto.getProduct());
-                    ProductInstance productInstance = new ProductInstance();
-
-                    productInstance.setProduct(product);
-                    productInstance.setWeight(dto.getWeight());
-
-                    return productInstance;
-                })
-                .collect(Collectors.toList());
-        recipe.setComposition(productList);
-
-        return recipe;
-    }
-
-    @Override
-    public RecipeDTO convertFromEntity(Recipe recipe) {
+    public RecipeDTO convert(Recipe recipe) {
         RecipeDTO recipeDTO = new RecipeDTO();
         BaseEssence baseEssence = new BaseEssence(recipe.getUuid(),
                 recipe.getCreationTime(), recipe.getLastUpdated());
@@ -84,9 +53,9 @@ public class RecipeConverter implements IEntityConverter<Recipe, RecipeCreateDTO
 
         recipeDTO.setWeight(weight);
         recipeDTO.setCalories(calories);
-        recipeDTO.setProteins(proteins);
-        recipeDTO.setFats(fats);
-        recipeDTO.setCarbohydrates(carbohydrates);
+        recipeDTO.setProteins(round(proteins, 1));
+        recipeDTO.setFats(round(fats, 1));
+        recipeDTO.setCarbohydrates(round(carbohydrates, 1));
 
         return  recipeDTO;
     }
@@ -96,7 +65,7 @@ public class RecipeConverter implements IEntityConverter<Recipe, RecipeCreateDTO
                 .map(product -> {
                     RecipeCompositionDTO compositionDTO = new RecipeCompositionDTO();
 
-                    ProductDTO productDTO = productConverter.convertFromEntity(product.getProduct());
+                    ProductDTO productDTO = productToDTOConverter.convert(product.getProduct());
                     int actualWeight = product.getWeight();
                     int standardWeight = productDTO.getWeight();
                     double ratio = 1.0 * actualWeight / standardWeight;
@@ -118,6 +87,7 @@ public class RecipeConverter implements IEntityConverter<Recipe, RecipeCreateDTO
 
         return recipeComposition;
     }
+
     private double round(double number, int places) {
         if (places < 1 || places > 1000) {
             throw new IllegalArgumentException("Can't round to '"

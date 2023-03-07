@@ -1,28 +1,14 @@
 package org.mycompany.fitness.service.converters;
 
 import org.mycompany.fitness.core.dto.BaseEssence;
-import org.mycompany.fitness.core.dto.services.product.ProductCreateDTO;
 import org.mycompany.fitness.core.dto.services.product.ProductDTO;
 import org.mycompany.fitness.dao.entities.Product;
-import org.mycompany.fitness.service.converters.api.IEntityConverter;
+import org.springframework.core.convert.converter.Converter;
 
-public class ProductConverter implements IEntityConverter<Product, ProductCreateDTO, ProductDTO> {
+public class ProductToDTOConverter implements Converter<Product, ProductDTO> {
     @Override
-    public Product convertToEntity(ProductCreateDTO productCreateDTO) {
-        Product product = new Product();
+    public ProductDTO convert(Product product) {
 
-        product.setTitle(productCreateDTO.getTitle());
-        product.setWeight(productCreateDTO.getWeight());
-        product.setCalories(productCreateDTO.getCalories());
-        product.setProteins(productCreateDTO.getProteins());
-        product.setFats(productCreateDTO.getFats());
-        product.setCarbohydrates(productCreateDTO.getCarbohydrates());
-
-        return product;
-    }
-
-    @Override
-    public ProductDTO convertFromEntity(Product product) {
         ProductDTO productDTO = new ProductDTO();
         BaseEssence baseEssence = new BaseEssence(product.getUuid(),
                 product.getCreationTime(), product.getLastUpdated());

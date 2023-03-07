@@ -20,34 +20,40 @@ import org.mycompany.fitness.service.api.IProductService;
 import org.mycompany.fitness.service.api.IRecipeService;
 import org.mycompany.fitness.service.api.IUserAuthenticationService;
 import org.mycompany.fitness.service.api.IUserDataService;
-import org.mycompany.fitness.service.converters.api.IEntityConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 
 @Configuration
 public class ServiceConfig {
 
     @Bean
-    public IUserDataService userDataService(IUserDataRepository userDataRepository,
-                                            IEntityConverter<User, UserCreateDTO, UserDTO> userConverter) {
-        return new UserDataService(userDataRepository, userConverter);
+    public IUserDataService userDataService(IUserDataRepository userRepository,
+                                            Converter<UserCreateDTO, User> toEntityConverter,
+                                            Converter<User, UserDTO> toDTOConverter) {
+
+        return new UserDataService(userRepository, toEntityConverter, toDTOConverter);
     }
 
     @Bean
     public IUserAuthenticationService userAuthenticationService(IUserDataService userDataService) {
+
         return new UserAuthenticationService(userDataService);
     }
 
     @Bean
     public IProductService productService(IProductRepository productRepository,
-                                          IEntityConverter<Product, ProductCreateDTO, ProductDTO> productConverter) {
-        return new ProductService(productRepository, productConverter);
+                                          Converter<ProductCreateDTO, Product> toEntityConverter,
+                                          Converter<Product, ProductDTO> toDTOConverter) {
+
+        return new ProductService(productRepository, toEntityConverter, toDTOConverter);
     }
 
     @Bean
     public IRecipeService recipeService(IRecipeRepository recipeRepository,
-                                        IEntityConverter<Recipe, RecipeCreateDTO, RecipeDTO> recipeConverter,
-                                         IProductService productService) {
-        return new RecipeService(recipeRepository, recipeConverter, productService);
+                                        Converter<RecipeCreateDTO, Recipe> toEntityConverter,
+                                        Converter<Recipe, RecipeDTO> toDTOConverter) {
+
+        return new RecipeService(recipeRepository, toEntityConverter, toDTOConverter);
     }
 }

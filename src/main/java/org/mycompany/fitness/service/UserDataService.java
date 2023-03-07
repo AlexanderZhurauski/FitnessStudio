@@ -8,7 +8,7 @@ import org.mycompany.fitness.dao.entities.Role;
 import org.mycompany.fitness.dao.entities.Status;
 import org.mycompany.fitness.dao.entities.User;
 import org.mycompany.fitness.dao.repositories.api.IUserDataRepository;
-import org.mycompany.fitness.service.converters.api.IEntityConverter;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.mycompany.fitness.service.api.IUserDataService;
@@ -18,24 +18,28 @@ import java.util.UUID;
 public class UserDataService implements IUserDataService {
 
     private IUserDataRepository userRepository;
-    private IEntityConverter<User, UserCreateDTO, UserDTO> converter;
+    private Converter<UserCreateDTO, User> toEntityConverter;
+    private Converter<User, UserDTO> toDTOConverter;
 
-    public UserDataService(IUserDataRepository userRepository, IEntityConverter converter) {
+    public UserDataService(IUserDataRepository userRepository,
+                           Converter<UserCreateDTO, User> toEntityConverter,
+                           Converter<User, UserDTO> toDTOConverter) {
         this.userRepository = userRepository;
-        this.converter = converter;
+        this.toEntityConverter = toEntityConverter;
+        this.toDTOConverter = toDTOConverter;
     }
 
 
     @Override
     public UUID create(UserCreateDTO userCreateDTO) {
-        User user = converter.convertToEntity(userCreateDTO);
+        User user = this.toEntityConverter.convert(userCreateDTO);
         return this.userRepository.save(user).getUuid();
     }
 
     @Override
     public Page<UserDTO> getPage(Pageable pageable) {
         Page<User> userPage = this.userRepository.findAll(pageable);
-        Page<UserDTO> userPageDTO = userPage.map(converter::convertFromEntity);
+        Page<UserDTO> userPageDTO = userPage.map(this.toDTOConverter::convert);
         return userPageDTO;
     }
 
@@ -43,7 +47,7 @@ public class UserDataService implements IUserDataService {
     public UserDTO get(UUID uuid) {
         User user = this.userRepository.findById(uuid)
                 .orElseThrow(() -> new EntityNotFoundException(uuid, "user"));
-        return converter.convertFromEntity(user);
+        return toDTOConverter.convert(user);
     }
 
     @Override
@@ -63,6 +67,6 @@ public class UserDataService implements IUserDataService {
         user.setStatus(new Status(userCreateDTO.getStatus()));
         this.userRepository.save(user);
 
-        return converter.convertFromEntity(user);
+        return toDTOConverter.convert(user);
     }
 }

@@ -6,9 +6,8 @@ import org.mycompany.fitness.core.dto.services.recipe.RecipeDTO;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
 import org.mycompany.fitness.dao.entities.Recipe;
 import org.mycompany.fitness.dao.repositories.api.IRecipeRepository;
-import org.mycompany.fitness.service.api.IProductService;
 import org.mycompany.fitness.service.api.IRecipeService;
-import org.mycompany.fitness.service.converters.api.IEntityConverter;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,27 +16,27 @@ import java.util.UUID;
 public class RecipeService implements IRecipeService {
 
     private IRecipeRepository recipeRepository;
-    private IEntityConverter<Recipe, RecipeCreateDTO, RecipeDTO> converter;
-    private IProductService productService;
+    private Converter<RecipeCreateDTO, Recipe> toEntityConverter;
+    private Converter<Recipe, RecipeDTO> toDTOConverter;
 
     public RecipeService(IRecipeRepository recipeRepository,
-                         IEntityConverter<Recipe, RecipeCreateDTO, RecipeDTO> converter,
-                         IProductService productService) {
+                         Converter<RecipeCreateDTO, Recipe> toEntityConverter,
+                         Converter<Recipe, RecipeDTO> toDTOConverter) {
         this.recipeRepository = recipeRepository;
-        this.converter = converter;
-        this.productService = productService;
+        this.toEntityConverter = toEntityConverter;
+        this.toDTOConverter = toDTOConverter;
     }
 
     @Override
     public UUID create(RecipeCreateDTO recipeCreateDTO) {
-        Recipe recipe = converter.convertToEntity(recipeCreateDTO);
+        Recipe recipe = toEntityConverter.convert(recipeCreateDTO);
         return this.recipeRepository.save(recipe).getUuid();
     }
 
     @Override
     public Page<RecipeDTO> getPage(Pageable pageable) {
         Page<Recipe> recipePage = this.recipeRepository.findAll(pageable);
-        return recipePage.map(converter::convertFromEntity);
+        return recipePage.map(this.toDTOConverter::convert);
     }
 
     @Override
@@ -51,11 +50,11 @@ public class RecipeService implements IRecipeService {
                     + "' has already been modified!");
         }
 
-        Recipe updatedRecipe = converter.convertToEntity(recipeCreateDTO);
+        Recipe updatedRecipe = this.toEntityConverter.convert(recipeCreateDTO);
         recipe.setTitle(updatedRecipe.getTitle());
         recipe.setComposition(updatedRecipe.getComposition());
         this.recipeRepository.save(recipe);
 
-        return converter.convertFromEntity(recipe);
+        return this.toDTOConverter.convert(recipe);
     }
 }
