@@ -24,26 +24,31 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UUID> createUser(@Valid @RequestBody UserCreateDTO user) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(this.service.create(user));
+    public ResponseEntity<String> createUser(@Valid @RequestBody UserCreateDTO user) {
+
+        this.service.create(user);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
     }
     @GetMapping
     public Page<UserDTO> getUserPage(Pageable pageable) {
+
         return this.service.getPage(pageable);
     }
 
     @GetMapping("/{uuid}")
     public ResponseEntity<UserDTO> getUserData(@PathVariable UUID uuid) {
+
         return ResponseEntity.ok(this.service.get(uuid));
     }
 
     @PutMapping("/{uuid}/dt_update/{lastUpdated}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable UUID uuid,
+    public ResponseEntity<String> updateUser(@PathVariable UUID uuid,
                                               @PathVariable @Positive Long lastUpdated,
                                              @Valid @RequestBody UserCreateDTO user) {
 
-        return ResponseEntity.ok(this.service.update(uuid, lastUpdated, user));
+        this.service.update(uuid, lastUpdated, user);
+        return ResponseEntity.ok()
+                .build();
     }
 }

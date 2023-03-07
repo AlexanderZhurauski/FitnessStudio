@@ -23,9 +23,9 @@ public class RecipeController {
 
     @PostMapping
     public ResponseEntity<UUID> createProduct(@RequestBody RecipeCreateDTO recipe) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(this.recipeService.create(recipe));
+        this.recipeService.create(recipe);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
     }
 
     @GetMapping
@@ -38,8 +38,9 @@ public class RecipeController {
                                                  @PathVariable Long lastUpdated,
                                                  @RequestBody RecipeCreateDTO product) {
 
+        this.recipeService.update(uuid, lastUpdated, product);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(this.recipeService.update(uuid, lastUpdated, product));
+                .build();
     }
 }

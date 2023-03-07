@@ -17,13 +17,11 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
-    public UUID register(UserRegistrationDTO userRegistrationDTO) {
-        return null;
+    public void register(UserRegistrationDTO userRegistrationDTO) {
     }
 
     @Override
-    public boolean verify(String code, String mail) {
-        return false;
+    public void verify(String code, String mail) {
     }
 
     @Override

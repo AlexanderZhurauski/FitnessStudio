@@ -22,10 +22,10 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<UUID> createProduct(@RequestBody ProductCreateDTO product) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(this.productService.create(product));
+    public ResponseEntity<String> createProduct(@RequestBody ProductCreateDTO product) {
+        this.productService.create(product);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
     }
 
     @GetMapping
@@ -34,10 +34,11 @@ public class ProductController {
     }
 
     @PutMapping("/{uuid}/dt_update/{lastUpdated}")
-    public ResponseEntity<ProductDTO> updateUser(@PathVariable UUID uuid,
+    public ResponseEntity<String> updateUser(@PathVariable UUID uuid,
                                               @PathVariable Long lastUpdated,
                                               @RequestBody ProductCreateDTO product) {
-
-        return ResponseEntity.ok(this.productService.update(uuid, lastUpdated, product));
+        this.productService.update(uuid, lastUpdated, product);
+        return ResponseEntity.ok()
+                .build();
     }
 }

@@ -9,8 +9,8 @@ import java.util.UUID;
 
 public interface IUserDataService {
 
-    UUID create(UserCreateDTO userCreateDTO);
+    void create(UserCreateDTO userCreateDTO);
     Page<UserDTO> getPage(Pageable pageable);
     UserDTO get(UUID uuid);
-    UserDTO update(UUID uuid, Long lastUpdated, UserCreateDTO userCreateDTO);
+    void update(UUID uuid, Long lastUpdated, UserCreateDTO userCreateDTO);
 }

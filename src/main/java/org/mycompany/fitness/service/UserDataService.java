@@ -31,9 +31,9 @@ public class UserDataService implements IUserDataService {
 
 
     @Override
-    public UUID create(UserCreateDTO userCreateDTO) {
+    public void create(UserCreateDTO userCreateDTO) {
         User user = this.toEntityConverter.convert(userCreateDTO);
-        return this.userRepository.save(user).getUuid();
+        this.userRepository.save(user);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class UserDataService implements IUserDataService {
     }
 
     @Override
-    public UserDTO update(UUID uuid, Long lastUpdated, UserCreateDTO userCreateDTO) {
+    public void update(UUID uuid, Long lastUpdated, UserCreateDTO userCreateDTO) {
         User user = this.userRepository.findById(uuid)
                 .orElseThrow(() -> new EntityNotFoundException(uuid, "user"));
 
@@ -66,7 +66,5 @@ public class UserDataService implements IUserDataService {
         user.setFullName(userCreateDTO.getFullName());
         user.setStatus(new Status(userCreateDTO.getStatus()));
         this.userRepository.save(user);
-
-        return toDTOConverter.convert(user);
     }
 }

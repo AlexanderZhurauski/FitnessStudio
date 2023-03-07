@@ -28,9 +28,9 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public UUID create(ProductCreateDTO productCreateDTO) {
+    public void create(ProductCreateDTO productCreateDTO) {
         Product product = toEntityConverter.convert(productCreateDTO);
-        return this.productRepository.save(product).getUuid();
+        this.productRepository.save(product);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductDTO update(UUID uuid, Long lastUpdated,
+    public void update(UUID uuid, Long lastUpdated,
                              ProductCreateDTO productCreateDTO) {
 
         Product product = this.productRepository.findById(uuid)
@@ -64,7 +64,5 @@ public class ProductService implements IProductService {
         product.setCalories(productCreateDTO.getCalories());
         product.setWeight(productCreateDTO.getWeight());
         this.productRepository.save(product);
-
-        return toDTOConverter.convert(product);
     }
 }

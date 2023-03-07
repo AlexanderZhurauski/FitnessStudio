@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public interface IProductService {
 
-    UUID create(ProductCreateDTO productCreateDTO);
+    void create(ProductCreateDTO productCreateDTO);
     Page<ProductDTO> getPage(Pageable pageable);
     Product getByID(UUID uuid);
-    ProductDTO update(UUID uuid, Long lastUpdated, ProductCreateDTO productCreateDTO);
+    void update(UUID uuid, Long lastUpdated, ProductCreateDTO productCreateDTO);
 }

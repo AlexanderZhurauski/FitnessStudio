@@ -28,9 +28,9 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public UUID create(RecipeCreateDTO recipeCreateDTO) {
+    public void create(RecipeCreateDTO recipeCreateDTO) {
         Recipe recipe = toEntityConverter.convert(recipeCreateDTO);
-        return this.recipeRepository.save(recipe).getUuid();
+        this.recipeRepository.save(recipe);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public RecipeDTO update(UUID uuid, Long lastUpdated,
+    public void update(UUID uuid, Long lastUpdated,
                              RecipeCreateDTO recipeCreateDTO) {
         Recipe recipe = this.recipeRepository.findById(uuid)
                 .orElseThrow(() -> new EntityNotFoundException(uuid, "recipe"));
@@ -54,7 +54,5 @@ public class RecipeService implements IRecipeService {
         recipe.setTitle(updatedRecipe.getTitle());
         recipe.setComposition(updatedRecipe.getComposition());
         this.recipeRepository.save(recipe);
-
-        return this.toDTOConverter.convert(recipe);
     }
 }

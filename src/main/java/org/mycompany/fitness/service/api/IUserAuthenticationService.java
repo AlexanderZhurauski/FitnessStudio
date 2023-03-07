@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public interface IUserAuthenticationService {
 
-    UUID register(UserRegistrationDTO userRegistrationDTO);
-    boolean verify(String code, String mail);
+    void register(UserRegistrationDTO userRegistrationDTO);
+    void verify(String code, String mail);
     void login(UserLoginDTO userLoginDTO);
     UserDTO getMyData(UUID uuid);
 }
