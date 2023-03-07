@@ -2,7 +2,6 @@
 package org.mycompany.fitness.web.controllers;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
 import org.mycompany.fitness.core.dto.services.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.services.user.UserDTO;
 import org.springframework.data.domain.Page;
@@ -12,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.mycompany.fitness.service.api.IUserDataService;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @RestController
@@ -43,8 +43,8 @@ public class UserController {
     }
 
     @PutMapping("/{uuid}/dt_update/{lastUpdated}")
-    public ResponseEntity<String> updateUser(@PathVariable UUID uuid,
-                                              @PathVariable @Positive Long lastUpdated,
+    public ResponseEntity<UserDTO> updateUser(@PathVariable UUID uuid,
+                                              @PathVariable Instant lastUpdated,
                                              @Valid @RequestBody UserCreateDTO user) {
 
         this.service.update(uuid, lastUpdated, user);

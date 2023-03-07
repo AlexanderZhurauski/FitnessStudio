@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +36,7 @@ public class RecipeController {
 
     @PutMapping("/{uuid}/dt_update/{lastUpdated}")
     public ResponseEntity<RecipeDTO> updateUser(@PathVariable UUID uuid,
-                                                 @PathVariable Long lastUpdated,
+                                                 @PathVariable Instant lastUpdated,
                                                  @RequestBody RecipeCreateDTO product) {
 
         this.recipeService.update(uuid, lastUpdated, product);

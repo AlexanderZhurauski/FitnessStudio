@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.mycompany.fitness.service.api.IUserDataService;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public class UserDataService implements IUserDataService {
@@ -51,11 +52,11 @@ public class UserDataService implements IUserDataService {
     }
 
     @Override
-    public void update(UUID uuid, Long lastUpdated, UserCreateDTO userCreateDTO) {
+    public void update(UUID uuid, Instant lastUpdated, UserCreateDTO userCreateDTO) {
         User user = this.userRepository.findById(uuid)
                 .orElseThrow(() -> new EntityNotFoundException(uuid, "user"));
 
-        if (user.getLastUpdated().toEpochMilli() != lastUpdated) {
+        if (user.getLastUpdated().toEpochMilli() != lastUpdated.toEpochMilli()) {
             throw new OptimisticLockException("User with id '" + user.getUuid()
                     + "' has already been modified!");
         }
