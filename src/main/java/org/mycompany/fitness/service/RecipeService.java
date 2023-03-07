@@ -1,36 +1,42 @@
 package org.mycompany.fitness.service;
 
 import jakarta.persistence.OptimisticLockException;
+import org.mycompany.fitness.core.dto.recipe.RecipeCompositionCreateDTO;
 import org.mycompany.fitness.core.dto.recipe.RecipeCreateDTO;
 import org.mycompany.fitness.core.dto.recipe.RecipeDTO;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
+import org.mycompany.fitness.dao.entities.Product;
+import org.mycompany.fitness.dao.entities.ProductInstance;
 import org.mycompany.fitness.dao.entities.Recipe;
 import org.mycompany.fitness.dao.repositories.IRecipeRepository;
+import org.mycompany.fitness.service.api.IProductService;
 import org.mycompany.fitness.service.api.IRecipeService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class RecipeService implements IRecipeService {
 
     private IRecipeRepository recipeRepository;
-    private Converter<RecipeCreateDTO, Recipe> toEntityConverter;
     private Converter<Recipe, RecipeDTO> toDTOConverter;
+    private IProductService productService;
 
     public RecipeService(IRecipeRepository recipeRepository,
-                         Converter<RecipeCreateDTO, Recipe> toEntityConverter,
-                         Converter<Recipe, RecipeDTO> toDTOConverter) {
+                         Converter<Recipe, RecipeDTO> toDTOConverter,
+                         IProductService productService) {
         this.recipeRepository = recipeRepository;
-        this.toEntityConverter = toEntityConverter;
         this.toDTOConverter = toDTOConverter;
+        this.productService = productService;
     }
 
     @Override
     public void create(RecipeCreateDTO recipeCreateDTO) {
-        Recipe recipe = toEntityConverter.convert(recipeCreateDTO);
+        Recipe recipe = convertToEntity(recipeCreateDTO);
         this.recipeRepository.save(recipe);
     }
 
@@ -50,9 +56,37 @@ public class RecipeService implements IRecipeService {
                     + "' has already been modified!");
         }
 
-        Recipe updatedRecipe = this.toEntityConverter.convert(recipeCreateDTO);
-        recipe.setTitle(updatedRecipe.getTitle());
-        recipe.setComposition(updatedRecipe.getComposition());
+        List<ProductInstance> productInstances = convertToProductInstances(recipeCreateDTO.getComposition());
+        recipe.setTitle(recipeCreateDTO.getTitle());
+        recipe.setComposition(productInstances);
         this.recipeRepository.save(recipe);
+    }
+
+    private Recipe convertToEntity(RecipeCreateDTO recipeCreateDTO) {
+
+        Recipe recipe = new Recipe();
+        recipe.setTitle(recipeCreateDTO.getTitle());
+
+        List<RecipeCompositionCreateDTO> recipeComposition = recipeCreateDTO.getComposition();
+        List<ProductInstance> productList = convertToProductInstances(recipeComposition);
+        recipe.setComposition(productList);
+
+        return recipe;
+    }
+
+    private List<ProductInstance> convertToProductInstances(
+            List<RecipeCompositionCreateDTO> recipeCompositionCreateDTOS) {
+
+        return recipeCompositionCreateDTOS.stream()
+                .map(dto -> {
+                    Product product = this.productService.getByID(dto.getProduct());
+                    ProductInstance productInstance = new ProductInstance();
+
+                    productInstance.setProduct(product);
+                    productInstance.setWeight(dto.getWeight());
+
+                    return productInstance;
+                })
+                .collect(Collectors.toList());
     }
 }

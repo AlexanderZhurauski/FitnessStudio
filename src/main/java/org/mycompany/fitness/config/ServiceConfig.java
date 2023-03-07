@@ -2,7 +2,6 @@ package org.mycompany.fitness.config;
 
 import org.mycompany.fitness.core.dto.product.ProductCreateDTO;
 import org.mycompany.fitness.core.dto.product.ProductDTO;
-import org.mycompany.fitness.core.dto.recipe.RecipeCreateDTO;
 import org.mycompany.fitness.core.dto.recipe.RecipeDTO;
 import org.mycompany.fitness.core.dto.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.user.UserDTO;
@@ -51,9 +50,9 @@ public class ServiceConfig {
 
     @Bean
     public IRecipeService recipeService(IRecipeRepository recipeRepository,
-                                        Converter<RecipeCreateDTO, Recipe> toEntityConverter,
-                                        Converter<Recipe, RecipeDTO> toDTOConverter) {
+                                        Converter<Recipe, RecipeDTO> toDTOConverter,
+                                        IProductService productService) {
 
-        return new RecipeService(recipeRepository, toEntityConverter, toDTOConverter);
+        return new RecipeService(recipeRepository, toDTOConverter, productService);
     }
 }
