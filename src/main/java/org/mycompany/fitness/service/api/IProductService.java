@@ -1,7 +1,7 @@
 package org.mycompany.fitness.service.api;
 
-import org.mycompany.fitness.core.dto.services.product.ProductCreateDTO;
-import org.mycompany.fitness.core.dto.services.product.ProductDTO;
+import org.mycompany.fitness.core.dto.product.ProductCreateDTO;
+import org.mycompany.fitness.core.dto.product.ProductDTO;
 import org.mycompany.fitness.dao.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

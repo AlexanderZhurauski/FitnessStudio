@@ -1,7 +1,7 @@
 package org.mycompany.fitness.service.api;
 
-import org.mycompany.fitness.core.dto.services.user.UserCreateDTO;
-import org.mycompany.fitness.core.dto.services.user.UserDTO;
+import org.mycompany.fitness.core.dto.user.UserCreateDTO;
+import org.mycompany.fitness.core.dto.user.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

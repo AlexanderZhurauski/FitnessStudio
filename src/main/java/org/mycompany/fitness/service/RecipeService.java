@@ -1,11 +1,11 @@
 package org.mycompany.fitness.service;
 
 import jakarta.persistence.OptimisticLockException;
-import org.mycompany.fitness.core.dto.services.recipe.RecipeCreateDTO;
-import org.mycompany.fitness.core.dto.services.recipe.RecipeDTO;
+import org.mycompany.fitness.core.dto.recipe.RecipeCreateDTO;
+import org.mycompany.fitness.core.dto.recipe.RecipeDTO;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
 import org.mycompany.fitness.dao.entities.Recipe;
-import org.mycompany.fitness.dao.repositories.api.IRecipeRepository;
+import org.mycompany.fitness.dao.repositories.IRecipeRepository;
 import org.mycompany.fitness.service.api.IRecipeService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;

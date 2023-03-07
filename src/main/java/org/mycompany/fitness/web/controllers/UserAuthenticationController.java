@@ -1,9 +1,9 @@
 package org.mycompany.fitness.web.controllers;
 
 import org.mycompany.fitness.core.dto.BaseEssence;
-import org.mycompany.fitness.core.dto.services.user.UserDTO;
-import org.mycompany.fitness.core.dto.services.user.UserLoginDTO;
-import org.mycompany.fitness.core.dto.services.user.UserRegistrationDTO;
+import org.mycompany.fitness.core.dto.user.UserDTO;
+import org.mycompany.fitness.core.dto.user.UserLoginDTO;
+import org.mycompany.fitness.core.dto.user.UserRegistrationDTO;
 import org.mycompany.fitness.core.dto.enums.UserRole;
 import org.mycompany.fitness.core.dto.enums.UserStatus;
 import org.springframework.http.HttpStatus;

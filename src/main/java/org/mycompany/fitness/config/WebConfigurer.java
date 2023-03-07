@@ -1,6 +1,6 @@
 package org.mycompany.fitness.config;
 
-import org.mycompany.fitness.service.converters.StringToInstantConverter;
+import org.mycompany.fitness.converters.json.StringToInstantConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

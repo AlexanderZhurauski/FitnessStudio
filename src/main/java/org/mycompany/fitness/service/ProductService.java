@@ -1,11 +1,11 @@
 package org.mycompany.fitness.service;
 
 import jakarta.persistence.OptimisticLockException;
-import org.mycompany.fitness.core.dto.services.product.ProductCreateDTO;
-import org.mycompany.fitness.core.dto.services.product.ProductDTO;
+import org.mycompany.fitness.core.dto.product.ProductCreateDTO;
+import org.mycompany.fitness.core.dto.product.ProductDTO;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
 import org.mycompany.fitness.dao.entities.Product;
-import org.mycompany.fitness.dao.repositories.api.IProductRepository;
+import org.mycompany.fitness.dao.repositories.IProductRepository;
 import org.mycompany.fitness.service.api.IProductService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
