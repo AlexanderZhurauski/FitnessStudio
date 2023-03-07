@@ -23,7 +23,7 @@ public class RecipeController {
     }
 
     @PostMapping
-    public ResponseEntity<UUID> createProduct(@RequestBody RecipeCreateDTO recipe) {
+    public ResponseEntity<String> createProduct(@RequestBody RecipeCreateDTO recipe) {
         this.recipeService.create(recipe);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .build();
@@ -35,7 +35,7 @@ public class RecipeController {
     }
 
     @PutMapping("/{uuid}/dt_update/{lastUpdated}")
-    public ResponseEntity<RecipeDTO> updateUser(@PathVariable UUID uuid,
+    public ResponseEntity<String> updateUser(@PathVariable UUID uuid,
                                                  @PathVariable Instant lastUpdated,
                                                  @RequestBody RecipeCreateDTO product) {
 
