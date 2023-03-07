@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.NotNull;
-import org.mycompany.fitness.core.dto.converters.InstantToUnix;
-import org.mycompany.fitness.core.dto.converters.UnixToInstant;
+import org.mycompany.fitness.converters.json.InstantToUnix;
+import org.mycompany.fitness.converters.json.UnixToInstant;
 
 import java.time.Instant;
 import java.util.UUID;

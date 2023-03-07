@@ -1,18 +1,19 @@
 package org.mycompany.fitness.service;
 
 import jakarta.persistence.OptimisticLockException;
-import org.mycompany.fitness.core.dto.services.user.UserCreateDTO;
-import org.mycompany.fitness.core.dto.services.user.UserDTO;
+import org.mycompany.fitness.core.dto.user.UserCreateDTO;
+import org.mycompany.fitness.core.dto.user.UserDTO;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
 import org.mycompany.fitness.dao.entities.Role;
 import org.mycompany.fitness.dao.entities.Status;
 import org.mycompany.fitness.dao.entities.User;
-import org.mycompany.fitness.dao.repositories.api.IUserDataRepository;
+import org.mycompany.fitness.dao.repositories.IUserDataRepository;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.mycompany.fitness.service.api.IUserDataService;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public class UserDataService implements IUserDataService {
@@ -51,11 +52,11 @@ public class UserDataService implements IUserDataService {
     }
 
     @Override
-    public void update(UUID uuid, Long lastUpdated, UserCreateDTO userCreateDTO) {
+    public void update(UUID uuid, Instant lastUpdated, UserCreateDTO userCreateDTO) {
         User user = this.userRepository.findById(uuid)
                 .orElseThrow(() -> new EntityNotFoundException(uuid, "user"));
 
-        if (user.getLastUpdated().toEpochMilli() != lastUpdated) {
+        if (user.getLastUpdated().toEpochMilli() != lastUpdated.toEpochMilli()) {
             throw new OptimisticLockException("User with id '" + user.getUuid()
                     + "' has already been modified!");
         }

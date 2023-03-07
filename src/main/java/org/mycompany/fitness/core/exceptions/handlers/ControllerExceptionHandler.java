@@ -2,9 +2,9 @@ package org.mycompany.fitness.core.exceptions.handlers;
 
 import jakarta.persistence.OptimisticLockException;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
-import org.mycompany.fitness.core.exceptions.errors.ErrorField;
-import org.mycompany.fitness.core.exceptions.errors.MultipleErrorResponse;
-import org.mycompany.fitness.core.exceptions.errors.SingleErrorResponse;
+import org.mycompany.fitness.core.exceptions.messages.ErrorField;
+import org.mycompany.fitness.core.exceptions.messages.MultipleErrorResponse;
+import org.mycompany.fitness.core.exceptions.messages.SingleErrorResponse;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

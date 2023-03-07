@@ -1,16 +1,17 @@
 package org.mycompany.fitness.service;
 
 import jakarta.persistence.OptimisticLockException;
-import org.mycompany.fitness.core.dto.services.recipe.RecipeCreateDTO;
-import org.mycompany.fitness.core.dto.services.recipe.RecipeDTO;
+import org.mycompany.fitness.core.dto.recipe.RecipeCreateDTO;
+import org.mycompany.fitness.core.dto.recipe.RecipeDTO;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
 import org.mycompany.fitness.dao.entities.Recipe;
-import org.mycompany.fitness.dao.repositories.api.IRecipeRepository;
+import org.mycompany.fitness.dao.repositories.IRecipeRepository;
 import org.mycompany.fitness.service.api.IRecipeService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public class RecipeService implements IRecipeService {
@@ -40,12 +41,11 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public void update(UUID uuid, Long lastUpdated,
-                             RecipeCreateDTO recipeCreateDTO) {
+    public void update(UUID uuid, Instant lastUpdated, RecipeCreateDTO recipeCreateDTO) {
         Recipe recipe = this.recipeRepository.findById(uuid)
                 .orElseThrow(() -> new EntityNotFoundException(uuid, "recipe"));
 
-        if (recipe.getLastUpdated().toEpochMilli() != lastUpdated) {
+        if (recipe.getLastUpdated().toEpochMilli() != lastUpdated.toEpochMilli()) {
             throw new OptimisticLockException("Recipe with id '" + recipe.getUuid()
                     + "' has already been modified!");
         }
