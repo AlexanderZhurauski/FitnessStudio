@@ -6,6 +6,7 @@ import org.mycompany.fitness.core.dto.product.ProductDTO;
 import org.mycompany.fitness.core.dto.recipe.RecipeDTO;
 import org.mycompany.fitness.core.dto.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.user.UserDTO;
+import org.mycompany.fitness.core.dto.user.UserRegistrationDTO;
 import org.mycompany.fitness.dao.entities.Product;
 import org.mycompany.fitness.dao.entities.Recipe;
 import org.mycompany.fitness.dao.entities.User;
@@ -40,6 +41,11 @@ public class ConverterConfig {
     @Bean
     public Converter<Recipe, RecipeDTO> recipeToDTOConverter() {
         return new RecipeToDTOConverter(productToDTOConverter());
+    }
+
+    @Bean
+    public Converter<UserRegistrationDTO, UserCreateDTO> registrationConverter(PasswordEncoder passwordEncoder) {
+        return new UserRegistrationConverter(passwordEncoder);
     }
 
 }

@@ -8,6 +8,6 @@ public interface IUserAuthenticationService {
 
     void register(UserRegistrationDTO userRegistrationDTO);
     void verify(String code, String mail);
-    void login(UserLoginDTO userLoginDTO);
+    String login(UserLoginDTO userLoginDTO);
     UserDTO getMyData();
 }
