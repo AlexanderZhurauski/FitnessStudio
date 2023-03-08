@@ -22,6 +22,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     private UserHolder userHolder;
     private Converter<User, UserDTO> toDTOConverter;
     private Converter<UserRegistrationDTO, UserCreateDTO> registrationConverter;
+    private JwtTokenUtil tokenUtil;
     private PasswordEncoder passwordEncoder;
 
     public UserAuthenticationService(UserDetailsService userDetailsService,
@@ -29,6 +30,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
                                      UserHolder userHolder,
                                      Converter<User, UserDTO> toDTOConverter,
                                      Converter<UserRegistrationDTO, UserCreateDTO> registrationConverter,
+                                     JwtTokenUtil tokenUtil,
                                      PasswordEncoder passwordEncoder) {
 
         this.userDetailsService = userDetailsService;
@@ -36,6 +38,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
         this.userHolder = userHolder;
         this.toDTOConverter = toDTOConverter;
         this.registrationConverter = registrationConverter;
+        this.tokenUtil = tokenUtil;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -52,19 +55,22 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Override
     public String login(UserLoginDTO userLoginDTO) {
+
         String userEmail = userLoginDTO.getMail();
         UserDetails loadedUser = this.userDetailsService.loadUserByUsername(userEmail);
-        String enteredPassword = this.passwordEncoder.encode(userLoginDTO.getPassword());
+        String enteredPassword = userLoginDTO.getPassword();
         String actualPassword = loadedUser.getPassword();
-        if (!enteredPassword.equals(actualPassword)) {
+
+        if (!this.passwordEncoder.matches(enteredPassword, actualPassword)) {
             throw new BadCredentialsException("Invalid password provided!");
         }
 
-        return JwtTokenUtil.generateAccessToken(loadedUser);
+        return this.tokenUtil.generateAccessToken(loadedUser);
     }
     @Override
     public UserDTO getMyData() {
+
         User user = (User) this.userHolder.getAuthentication().getPrincipal();
-        return toDTOConverter.convert(user);
+        return this.toDTOConverter.convert(user);
     }
 }

@@ -20,7 +20,7 @@ public class UserRegistrationConverter implements Converter<UserRegistrationDTO,
         UserCreateDTO createDTO = new UserCreateDTO();
         createDTO.setMail(source.getMail());
         createDTO.setFullName(source.getFullName());
-        createDTO.setPassword(passwordEncoder.encode(source.getPassword()));
+        createDTO.setPassword(source.getPassword());
         createDTO.setRole(UserRole.USER);
         createDTO.setStatus(UserStatus.WAITING_ACTIVATION);
 

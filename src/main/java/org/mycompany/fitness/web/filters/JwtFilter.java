@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,10 +20,13 @@ import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 public class JwtFilter extends OncePerRequestFilter {
 
-    private UserDetailsManager userManager;
+    private UserDetailsService userService;
+    private JwtTokenUtil tokenUtil;
 
-    public JwtFilter(UserDetailsManager userManager) {
-        this.userManager = userManager;
+    public JwtFilter(UserDetailsService userService,
+                     JwtTokenUtil tokenUtil) {
+        this.userService = userService;
+        this.tokenUtil = tokenUtil;
     }
 
     @Override
@@ -38,15 +41,13 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Get jwt token and validate
         final String token = header.split(" ")[1].trim();
-        if (!JwtTokenUtil.validate(token)) {
+        if (!tokenUtil.validate(token)) {
             chain.doFilter(request, response);
             return;
         }
 
-        // Get user identity and set it on the spring security context
-        UserDetails userDetails = this.userManager.loadUserByUsername(JwtTokenUtil.getUsername(token));
+        UserDetails userDetails = this.userService.loadUserByUsername(tokenUtil.getUsername(token));
 
         UsernamePasswordAuthenticationToken
                 authentication = new UsernamePasswordAuthenticationToken(

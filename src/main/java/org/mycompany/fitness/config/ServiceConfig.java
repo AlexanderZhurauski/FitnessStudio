@@ -11,6 +11,7 @@ import org.mycompany.fitness.dao.repositories.IProductRepository;
 import org.mycompany.fitness.dao.repositories.IRecipeRepository;
 import org.mycompany.fitness.dao.repositories.IUserAuthenticationRepository;
 import org.mycompany.fitness.dao.repositories.IUserDataRepository;
+import org.mycompany.fitness.security.JwtTokenUtil;
 import org.mycompany.fitness.security.UserHolder;
 import org.mycompany.fitness.service.ProductService;
 import org.mycompany.fitness.service.RecipeService;
@@ -27,7 +28,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.sql.DataSource;
 
 @Configuration
 public class ServiceConfig {
@@ -47,10 +47,11 @@ public class ServiceConfig {
                                                                 UserHolder userHolder,
                                                                 Converter<User, UserDTO> toDTOConverter,
                                                                 Converter<UserRegistrationDTO, UserCreateDTO> registrationConverter,
+                                                                JwtTokenUtil tokenUtil,
                                                                 PasswordEncoder passwordEncoder) {
 
         return new UserAuthenticationService(userDetailsService, userDataService, userHolder,
-                toDTOConverter, registrationConverter, passwordEncoder);
+                toDTOConverter, registrationConverter, tokenUtil, passwordEncoder);
     }
     @Bean
     public IProductService productService(IProductRepository productRepository,

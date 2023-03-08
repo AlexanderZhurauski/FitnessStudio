@@ -1,17 +1,17 @@
 package org.mycompany.fitness.config;
 
-import org.mycompany.fitness.web.filters.ExceptionHandlerFilter;
+import jakarta.servlet.http.HttpServletResponse;
+import org.mycompany.fitness.security.JwtTokenUtil;
 import org.mycompany.fitness.web.filters.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -19,16 +19,35 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
-                                           JwtFilter jwtFilter,
-                                           ExceptionHandlerFilter exceptionHandlerFilter) throws Exception {
-        http
-                .addFilterBefore(exceptionHandlerFilter, LogoutFilter.class)
-                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        http
-                .authorizeHttpRequests((authz) -> authz
-                        .anyRequest().authenticated()
+                                           JwtFilter jwtFilter) throws Exception {
+        http = http.cors().and().csrf().disable();
+
+        http = http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and();
+
+
+        http = http
+                .exceptionHandling()
+                .authenticationEntryPoint(
+                        (request, response, ex) -> {
+                            response.sendError(
+                                    HttpServletResponse.SC_UNAUTHORIZED,
+                                    ex.getMessage()
+                            );
+                        }
                 )
-                .httpBasic(withDefaults());
+                .and();
+
+        http
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users/registration").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
+                        .anyRequest().authenticated()
+                );
 
         return http.build();
     }
@@ -36,5 +55,11 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
 
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtTokenUtil jwtTokenUtil() {
+
+        return new JwtTokenUtil();
     }
 }

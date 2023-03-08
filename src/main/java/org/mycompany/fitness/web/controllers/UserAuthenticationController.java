@@ -21,7 +21,7 @@ public class UserAuthenticationController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<String> register(@Valid UserRegistrationDTO userRegistration) {
+    public ResponseEntity<String> register(@Valid @RequestBody UserRegistrationDTO userRegistration) {
 
         this.userAuthenticationService.register(userRegistration);
         return ResponseEntity
@@ -38,7 +38,7 @@ public class UserAuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid UserLoginDTO userLogin) {
+    public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO userLogin) {
 
         String jwtToken = this.userAuthenticationService.login(userLogin);
         return ResponseEntity
