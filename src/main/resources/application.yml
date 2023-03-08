@@ -3,7 +3,22 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/fitness
     username: postgres
-    password: secret
+    password: ${DB_PASSWORD}
+
+  mail:
+    host: smtp.gmail.com
+    username: gandalfdude@gmail.com
+    password: ${MAIL_PASSWORD}
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        smtps:
+          trust: smtp.gmail.com
+
 
   jpa:
     show-sql: true
@@ -14,3 +29,15 @@ spring:
 server:
   servlet:
     context-path: /fitness
+
+org:
+  jobrunr:
+    dashboard:
+      enabled: true
+      port: 8000
+    miscellaneous:
+      allow-anonymous-data-usage: false
+    jobs:
+      retry-back-off-time-seed: 1
+    database:
+      table-prefix: app.
