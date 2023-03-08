@@ -7,13 +7,19 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import jakarta.persistence.*;
+import org.mycompany.fitness.core.dto.enums.UserStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
+import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(schema = "app", name = "user")
-public class User {
+public class User implements UserDetails {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue
@@ -55,64 +61,74 @@ public class User {
     public UUID getUuid() {
         return uuid;
     }
-
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
-
     public Instant getCreationTime() {
         return creationTime;
     }
-
     public void setCreationTime(Instant creationTime) {
         this.creationTime = creationTime;
     }
-
     public Instant getLastUpdated() {
         return lastUpdated;
     }
-
     public void setLastUpdated(Instant lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
-
     public String getMail() {
         return mail;
     }
-
     public void setMail(String mail) {
         this.mail = mail;
     }
-
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
-
     public String getFullName() {
         return fullName;
     }
-
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-
     public Role getRole() {
         return role;
     }
-
     public void setRole(Role role) {
         this.role = role;
     }
-
     public Status getStatus() {
         return status;
     }
-
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Set.of(new SimpleGrantedAuthority("ROLE_" + this.role.getRole().name()));
+    }
+    @Override
+    public String getUsername() {
+        return this.mail;
+    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return !this.status.getStatus().equals(UserStatus.DEACTIVATED);
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+        return !this.status.getStatus().equals(UserStatus.DEACTIVATED);
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isEnabled() {
+        return this.status.getStatus().equals(UserStatus.ACTIVATED);
     }
 }

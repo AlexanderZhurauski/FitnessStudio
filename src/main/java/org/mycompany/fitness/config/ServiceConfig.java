@@ -2,16 +2,17 @@ package org.mycompany.fitness.config;
 
 import org.mycompany.fitness.core.dto.product.ProductCreateDTO;
 import org.mycompany.fitness.core.dto.product.ProductDTO;
-import org.mycompany.fitness.core.dto.recipe.RecipeCreateDTO;
 import org.mycompany.fitness.core.dto.recipe.RecipeDTO;
 import org.mycompany.fitness.core.dto.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.user.UserDTO;
-import org.mycompany.fitness.dao.entities.Product;
-import org.mycompany.fitness.dao.entities.Recipe;
-import org.mycompany.fitness.dao.entities.User;
+import org.mycompany.fitness.core.dto.user.UserRegistrationDTO;
+import org.mycompany.fitness.dao.entities.*;
 import org.mycompany.fitness.dao.repositories.IProductRepository;
 import org.mycompany.fitness.dao.repositories.IRecipeRepository;
+import org.mycompany.fitness.dao.repositories.IUserAuthenticationRepository;
 import org.mycompany.fitness.dao.repositories.IUserDataRepository;
+import org.mycompany.fitness.security.JwtTokenUtil;
+import org.mycompany.fitness.security.UserHolder;
 import org.mycompany.fitness.service.ProductService;
 import org.mycompany.fitness.service.RecipeService;
 import org.mycompany.fitness.service.UserAuthenticationService;
@@ -23,6 +24,10 @@ import org.mycompany.fitness.service.api.IUserDataService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @Configuration
 public class ServiceConfig {
@@ -30,17 +35,24 @@ public class ServiceConfig {
     @Bean
     public IUserDataService userDataService(IUserDataRepository userRepository,
                                             Converter<UserCreateDTO, User> toEntityConverter,
-                                            Converter<User, UserDTO> toDTOConverter) {
+                                            Converter<User, UserDTO> toDTOConverter,
+                                            PasswordEncoder passwordEncoder) {
 
-        return new UserDataService(userRepository, toEntityConverter, toDTOConverter);
+        return new UserDataService(userRepository, toEntityConverter, toDTOConverter, passwordEncoder);
     }
 
     @Bean
-    public IUserAuthenticationService userAuthenticationService(IUserDataService userDataService) {
+    public IUserAuthenticationService userAuthenticationService(UserDetailsService userDetailsService,
+                                                                IUserDataService userDataService,
+                                                                UserHolder userHolder,
+                                                                Converter<User, UserDTO> toDTOConverter,
+                                                                Converter<UserRegistrationDTO, UserCreateDTO> registrationConverter,
+                                                                JwtTokenUtil tokenUtil,
+                                                                PasswordEncoder passwordEncoder) {
 
-        return new UserAuthenticationService(userDataService);
+        return new UserAuthenticationService(userDetailsService, userDataService, userHolder,
+                toDTOConverter, registrationConverter, tokenUtil, passwordEncoder);
     }
-
     @Bean
     public IProductService productService(IProductRepository productRepository,
                                           Converter<ProductCreateDTO, Product> toEntityConverter,
@@ -51,9 +63,15 @@ public class ServiceConfig {
 
     @Bean
     public IRecipeService recipeService(IRecipeRepository recipeRepository,
-                                        Converter<RecipeCreateDTO, Recipe> toEntityConverter,
-                                        Converter<Recipe, RecipeDTO> toDTOConverter) {
+                                        Converter<Recipe, RecipeDTO> toDTOConverter,
+                                        IProductService productService) {
 
-        return new RecipeService(recipeRepository, toEntityConverter, toDTOConverter);
+        return new RecipeService(recipeRepository, toDTOConverter, productService);
+    }
+    @Bean
+    public UserDetailsService userDetailsService(IUserAuthenticationRepository authenticationRepository) {
+        return username -> authenticationRepository.findUserByMail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with email '"
+                        + username + "' has not been found!"));
     }
 }

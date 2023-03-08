@@ -2,10 +2,7 @@ package org.mycompany.fitness.core.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import org.mycompany.fitness.core.dto.enums.UserRole;
 import org.mycompany.fitness.core.dto.enums.UserStatus;
 
@@ -29,7 +26,7 @@ public class UserCreateDTO {
     private UserRole role;
     @NotNull(message = "No user status has been provided!")
     private UserStatus status;
-    @NotBlank(message = "The password cannot be blank!")
+    @Size(min = 5, message = "A password must be at least 5 symbols long")
     @NotNull(message = "No password has been provided!")
     private String password;
 

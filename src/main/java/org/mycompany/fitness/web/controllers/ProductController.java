@@ -35,7 +35,7 @@ public class ProductController {
     }
 
     @PutMapping("/{uuid}/dt_update/{lastUpdated}")
-    public ResponseEntity<ProductDTO> updateUser(@PathVariable UUID uuid,
+    public ResponseEntity<String> updateUser(@PathVariable UUID uuid,
                                               @PathVariable Instant lastUpdated,
                                               @RequestBody ProductCreateDTO product) {
         this.productService.update(uuid, lastUpdated, product);
