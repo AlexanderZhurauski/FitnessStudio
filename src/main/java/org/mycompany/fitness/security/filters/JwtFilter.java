@@ -1,4 +1,4 @@
-package org.mycompany.fitness.web.filters;
+package org.mycompany.fitness.security.filters;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

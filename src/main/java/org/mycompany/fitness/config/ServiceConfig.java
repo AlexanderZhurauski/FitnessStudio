@@ -1,5 +1,6 @@
 package org.mycompany.fitness.config;
 
+import org.jobrunr.scheduling.JobScheduler;
 import org.mycompany.fitness.core.dto.product.ProductCreateDTO;
 import org.mycompany.fitness.core.dto.product.ProductDTO;
 import org.mycompany.fitness.core.dto.recipe.RecipeDTO;
@@ -7,26 +8,20 @@ import org.mycompany.fitness.core.dto.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.user.UserDTO;
 import org.mycompany.fitness.core.dto.user.UserRegistrationDTO;
 import org.mycompany.fitness.dao.entities.*;
-import org.mycompany.fitness.dao.repositories.IProductRepository;
-import org.mycompany.fitness.dao.repositories.IRecipeRepository;
-import org.mycompany.fitness.dao.repositories.IUserAuthenticationRepository;
-import org.mycompany.fitness.dao.repositories.IUserDataRepository;
+import org.mycompany.fitness.dao.repositories.*;
 import org.mycompany.fitness.security.JwtTokenUtil;
 import org.mycompany.fitness.security.UserHolder;
-import org.mycompany.fitness.service.ProductService;
-import org.mycompany.fitness.service.RecipeService;
-import org.mycompany.fitness.service.UserAuthenticationService;
-import org.mycompany.fitness.service.UserDataService;
-import org.mycompany.fitness.service.api.IProductService;
-import org.mycompany.fitness.service.api.IRecipeService;
-import org.mycompany.fitness.service.api.IUserAuthenticationService;
-import org.mycompany.fitness.service.api.IUserDataService;
+import org.mycompany.fitness.service.*;
+import org.mycompany.fitness.service.api.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.net.UnknownHostException;
 
 
 @Configuration
@@ -73,5 +68,11 @@ public class ServiceConfig {
         return username -> authenticationRepository.findUserByMail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email '"
                         + username + "' has not been found!"));
+    }
+
+    @Bean
+    public IEmailService emailService(JavaMailSender mailSender, JobScheduler jobScheduler,
+                                      IConfirmationTokenRepository tokenRepository) {
+        return new EmailService(mailSender, jobScheduler, tokenRepository);
     }
 }

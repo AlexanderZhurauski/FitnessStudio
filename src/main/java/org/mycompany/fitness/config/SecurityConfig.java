@@ -2,7 +2,7 @@ package org.mycompany.fitness.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.mycompany.fitness.security.JwtTokenUtil;
-import org.mycompany.fitness.web.filters.JwtFilter;
+import org.mycompany.fitness.security.filters.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

@@ -32,6 +32,8 @@ server:
 
 org:
   jobrunr:
+    background-job-server:
+      enabled: true
     dashboard:
       enabled: true
       port: 8000
@@ -41,3 +43,12 @@ org:
       retry-back-off-time-seed: 1
     database:
       table-prefix: app.
+
+mail:
+  confirmation:
+    link: http://localhost:8080/fitness/api/v1/users/verification?code=%s&mail=%s
+    subject: Activate your Fitness Studio Account
+    text: "Dear valued user,\n\nThank you for choosing FitnessStudio, your ultimate fitness solution.
+      We appreciate your decision to embark on this journey with us towards a healthier lifestyle.\n\n
+      To proceed with your registration, please verify your email address by clicking on the following link - %s\n\n
+      We look forward to being a part of your fitness journey.\n\nBest regards,\nThe FitnessStudio team"

@@ -7,6 +7,7 @@ import org.mycompany.fitness.core.dto.user.UserRegistrationDTO;
 import org.mycompany.fitness.dao.entities.User;
 import org.mycompany.fitness.security.JwtTokenUtil;
 import org.mycompany.fitness.security.UserHolder;
+import org.mycompany.fitness.service.api.IEmailService;
 import org.mycompany.fitness.service.api.IUserAuthenticationService;
 import org.mycompany.fitness.service.api.IUserDataService;
 import org.springframework.core.convert.converter.Converter;
@@ -19,6 +20,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     private UserDetailsService userDetailsService;
     private IUserDataService userDataService;
+    private IEmailService emailService;
     private UserHolder userHolder;
     private Converter<User, UserDTO> toDTOConverter;
     private Converter<UserRegistrationDTO, UserCreateDTO> registrationConverter;
@@ -27,6 +29,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     public UserAuthenticationService(UserDetailsService userDetailsService,
                                      IUserDataService userDataService,
+                                     IEmailService emailService,
                                      UserHolder userHolder,
                                      Converter<User, UserDTO> toDTOConverter,
                                      Converter<UserRegistrationDTO, UserCreateDTO> registrationConverter,
@@ -35,6 +38,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
         this.userDetailsService = userDetailsService;
         this.userDataService = userDataService;
+        this.emailService = emailService;
         this.userHolder = userHolder;
         this.toDTOConverter = toDTOConverter;
         this.registrationConverter = registrationConverter;
@@ -44,13 +48,16 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Override
     public void register(UserRegistrationDTO userRegistrationDTO) {
+
         UserCreateDTO createDTO = this.registrationConverter.convert(userRegistrationDTO);
         this.userDataService.create(createDTO);
     }
 
     @Override
     public void verify(String code, String mail) {
-        //TODO: implement mail verification
+        if (!this.emailService.verifyEmail(mail, code)) {
+            throw new IllegalArgumentException("Bad bro lol");
+        }
     }
 
     @Override
