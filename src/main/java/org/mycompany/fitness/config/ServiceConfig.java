@@ -39,14 +39,15 @@ public class ServiceConfig {
     @Bean
     public IUserAuthenticationService userAuthenticationService(UserDetailsService userDetailsService,
                                                                 IUserDataService userDataService,
+                                                                IEmailService emailService,
                                                                 UserHolder userHolder,
                                                                 Converter<User, UserDTO> toDTOConverter,
                                                                 Converter<UserRegistrationDTO, UserCreateDTO> registrationConverter,
                                                                 JwtTokenUtil tokenUtil,
                                                                 PasswordEncoder passwordEncoder) {
 
-        return new UserAuthenticationService(userDetailsService, userDataService, userHolder,
-                toDTOConverter, registrationConverter, tokenUtil, passwordEncoder);
+        return new UserAuthenticationService(userDetailsService, userDataService, emailService,
+                userHolder, toDTOConverter, registrationConverter, tokenUtil, passwordEncoder);
     }
     @Bean
     public IProductService productService(IProductRepository productRepository,

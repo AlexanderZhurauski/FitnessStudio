@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
+import org.mycompany.fitness.core.exceptions.custom.NoValidTokenFound;
 import org.mycompany.fitness.dao.entities.ConfirmationToken;
 import org.mycompany.fitness.dao.repositories.IConfirmationTokenRepository;
 import org.mycompany.fitness.service.api.IEmailService;
@@ -36,8 +37,6 @@ public class EmailService implements IEmailService {
         this.mailSender = mailSender;
         this.jobScheduler = jobScheduler;
         this.tokenRepository = tokenRepository;
-
-        sendConfirmationEmail("gandalfdude@gmail.com");
     }
 
     @Override
@@ -57,7 +56,7 @@ public class EmailService implements IEmailService {
         String actualTokenValue = actualToken.getToken();
 
         if (actualTokenValue == null || actualTokenValue.isBlank()) {
-            throw new NoSuchElementException("No valid token for email '" + mail + "'");
+            throw new NoValidTokenFound("No valid token for email '" + mail + "'");
         }
 
         return actualTokenValue.equals(code);

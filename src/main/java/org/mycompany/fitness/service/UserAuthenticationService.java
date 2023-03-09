@@ -1,5 +1,6 @@
 package org.mycompany.fitness.service;
 
+import org.mycompany.fitness.core.dto.enums.UserStatus;
 import org.mycompany.fitness.core.dto.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.user.UserDTO;
 import org.mycompany.fitness.core.dto.user.UserLoginDTO;
@@ -11,6 +12,7 @@ import org.mycompany.fitness.service.api.IEmailService;
 import org.mycompany.fitness.service.api.IUserAuthenticationService;
 import org.mycompany.fitness.service.api.IUserDataService;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.annotation.Transient;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -47,17 +49,28 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
+    @Transient
     public void register(UserRegistrationDTO userRegistrationDTO) {
 
         UserCreateDTO createDTO = this.registrationConverter.convert(userRegistrationDTO);
         this.userDataService.create(createDTO);
+        this.emailService.sendConfirmationEmail(createDTO.getMail());
     }
 
     @Override
     public void verify(String code, String mail) {
         if (!this.emailService.verifyEmail(mail, code)) {
-            throw new IllegalArgumentException("Bad bro lol");
+            throw new BadCredentialsException("The token provided doesn't " +
+                    "match the token assigned to email '" + mail + "'");
         }
+        User confirmedUser = (User) this.userDetailsService.loadUserByUsername(mail);
+        this.userDataService.update(confirmedUser.getUuid(),
+                confirmedUser.getLastUpdated(),
+                new UserCreateDTO(confirmedUser.getMail(),
+                        confirmedUser.getFullName(),
+                        confirmedUser.getRole().getRole(),
+                        UserStatus.ACTIVATED,
+                        confirmedUser.getPassword()));
     }
 
     @Override
