@@ -3,12 +3,14 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/fitness
     username: postgres
-    password: ${DB_PASSWORD}
+    # password: ${DB_PASSWORD}
+    password: secret
 
   mail:
     host: smtp.gmail.com
     username: gandalfdude@gmail.com
-    password: ${MAIL_PASSWORD}
+    # password: ${MAIL_PASSWORD}
+    password: jffqvpctmgqqveya
     port: 587
     properties:
       mail:

@@ -1,28 +1,30 @@
 package org.mycompany.fitness.web.controllers;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.Valid;
 import org.mycompany.fitness.core.dto.user.UserDTO;
 import org.mycompany.fitness.core.dto.user.UserLoginDTO;
 import org.mycompany.fitness.core.dto.user.UserRegistrationDTO;
 import org.mycompany.fitness.service.api.IUserAuthenticationService;
+import org.mycompany.fitness.service.api.IUserDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserAuthenticationController {
+public class  UserAuthenticationController {
 
     private IUserAuthenticationService userAuthenticationService;
+    private IUserDataService userDataService;
     private JavaMailSender javaMailSender;
 
-    public UserAuthenticationController(IUserAuthenticationService userAuthenticationService, JavaMailSender javaMailSender) {
+    public UserAuthenticationController(IUserAuthenticationService userAuthenticationService,
+                                        IUserDataService userDataService, JavaMailSender javaMailSender) {
 
         this.userAuthenticationService = userAuthenticationService;
+        this.userDataService = userDataService;
         this.javaMailSender = javaMailSender;
     }
 
@@ -34,7 +36,6 @@ public class UserAuthenticationController {
                 .status(HttpStatus.CREATED)
                 .build();
     }
-
     @GetMapping("/verification")
     public ResponseEntity<String> verifyCode(@RequestParam String code,
                                              @RequestParam String mail) {
@@ -44,20 +45,16 @@ public class UserAuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO userLogin) throws MessagingException {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+    public ResponseEntity<String> login(@Valid @RequestBody UserLoginDTO userLogin) {
 
-        helper.setFrom("itacademy.team6@mail.ru");
-        helper.setTo("gandalfdude@gmail.com");
-        helper.setSubject("Test Mail");
-        helper.setText("Really it's just a test lol");
-
-        javaMailSender.send(message);
-        //String jwtToken = this.userAuthenticationService.login(userLogin);
+        if (!this.userDataService.isActivated(userLogin.getMail())) {
+            throw new BadCredentialsException(userLogin.getMail()
+                    + " mail address has not been verified!");
+        }
+        String jwtToken = this.userAuthenticationService.login(userLogin);
         return ResponseEntity
-                .status(HttpStatus.CREATED).build();
-                //.body(jwtToken);
+                .status(HttpStatus.CREATED)
+                .body(jwtToken);
     }
 
     @GetMapping("/me")

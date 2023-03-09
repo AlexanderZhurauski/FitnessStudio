@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -40,7 +41,7 @@ public class EmailService implements IEmailService {
     }
 
     @Override
-    @Transient
+    @Transactional
     public void sendConfirmationEmail(String address) {
 
         String confirmationToken = UUID.randomUUID().toString();

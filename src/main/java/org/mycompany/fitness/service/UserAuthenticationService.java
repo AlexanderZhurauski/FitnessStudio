@@ -12,11 +12,11 @@ import org.mycompany.fitness.service.api.IEmailService;
 import org.mycompany.fitness.service.api.IUserAuthenticationService;
 import org.mycompany.fitness.service.api.IUserDataService;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.annotation.Transient;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 public class UserAuthenticationService implements IUserAuthenticationService {
 
@@ -49,7 +49,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
-    @Transient
+    @Transactional
     public void register(UserRegistrationDTO userRegistrationDTO) {
 
         UserCreateDTO createDTO = this.registrationConverter.convert(userRegistrationDTO);
@@ -64,13 +64,8 @@ public class UserAuthenticationService implements IUserAuthenticationService {
                     "match the token assigned to email '" + mail + "'");
         }
         User confirmedUser = (User) this.userDetailsService.loadUserByUsername(mail);
-        this.userDataService.update(confirmedUser.getUuid(),
-                confirmedUser.getLastUpdated(),
-                new UserCreateDTO(confirmedUser.getMail(),
-                        confirmedUser.getFullName(),
-                        confirmedUser.getRole().getRole(),
-                        UserStatus.ACTIVATED,
-                        confirmedUser.getPassword()));
+        this.userDataService.changeStatus(confirmedUser.getUuid(),
+                confirmedUser.getLastUpdated(), UserStatus.ACTIVATED);
     }
 
     @Override
