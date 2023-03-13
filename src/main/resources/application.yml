@@ -1,16 +1,14 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/fitness
-    username: postgres
-    # password: ${DB_PASSWORD}
-    password: secret
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
 
   mail:
     host: smtp.gmail.com
-    username: gandalfdude@gmail.com
-    # password: ${MAIL_PASSWORD}
-    password: jffqvpctmgqqveya
+    username: ${MAIL_USER}
+    password: ${MAIL_PASSWORD}
     port: 587
     properties:
       mail:
@@ -48,7 +46,7 @@ org:
 
 mail:
   confirmation:
-    link: http://localhost:8080/fitness/api/v1/users/verification?code=%s&mail=%s
+    link: ${MAIL_CONFIRMATION_LINK}
     subject: Activate your Fitness Studio Account
     text: "Dear valued user,\n\nThank you for choosing FitnessStudio, your ultimate fitness solution.
       We appreciate your decision to embark on this journey with us towards a healthier lifestyle.\n\n

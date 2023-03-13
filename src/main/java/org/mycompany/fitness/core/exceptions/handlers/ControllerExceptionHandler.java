@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -67,8 +68,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler({EntityNotFoundException.class, OptimisticLockException.class,
-            NullPointerException.class, SQLException.class, NoValidTokenFound.class,
-            BadCredentialsException.class, MessagingException.class})
+            NullPointerException.class, SQLException.class, MessagingException.class})
     public ResponseEntity<List<SingleErrorResponse>> handleGeneralServiceException(RuntimeException ex) {
         SingleErrorResponse errorResponse = new SingleErrorResponse();
         Throwable rootCause = NestedExceptionUtils.getMostSpecificCause(ex);
@@ -76,5 +76,14 @@ public class ControllerExceptionHandler {
         errorResponse.setMessage(rootCause.getMessage());
 
         return ResponseEntity.internalServerError().body(List.of(errorResponse));
+    }
+
+    @ExceptionHandler({NoValidTokenFound.class, BadCredentialsException.class, UsernameNotFoundException.class})
+    public ResponseEntity<List<SingleErrorResponse>> handleAuthException(RuntimeException ex) {
+        SingleErrorResponse errorResponse = new SingleErrorResponse();
+        errorResponse.setLogref(ERROR);
+        errorResponse.setMessage(ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(List.of(errorResponse));
     }
 }

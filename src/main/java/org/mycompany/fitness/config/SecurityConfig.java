@@ -38,6 +38,14 @@ public class SecurityConfig {
                             );
                         }
                 )
+                .accessDeniedHandler(
+                        (request, response, ex) -> {
+                            response.sendError(
+                                    HttpServletResponse.SC_FORBIDDEN,
+                                    ex.getMessage()
+                            );
+                        }
+                )
                 .and();
 
         http
@@ -48,6 +56,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/registration").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users/me").authenticated()
+                        .requestMatchers("/api/v1/users/**").authenticated()
                         .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
