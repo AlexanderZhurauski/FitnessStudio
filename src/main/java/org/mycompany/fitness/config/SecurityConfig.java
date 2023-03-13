@@ -2,7 +2,7 @@ package org.mycompany.fitness.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.mycompany.fitness.security.JwtTokenUtil;
-import org.mycompany.fitness.web.filters.JwtFilter;
+import org.mycompany.fitness.security.filters.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,14 +38,26 @@ public class SecurityConfig {
                             );
                         }
                 )
+                .accessDeniedHandler(
+                        (request, response, ex) -> {
+                            response.sendError(
+                                    HttpServletResponse.SC_FORBIDDEN,
+                                    ex.getMessage()
+                            );
+                        }
+                )
                 .and();
 
         http
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/verification").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/registration").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/me").authenticated()
+                        .requestMatchers("/api/v1/users/**").authenticated()
+                        .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
 

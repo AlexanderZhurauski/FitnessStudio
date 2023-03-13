@@ -1,5 +1,6 @@
 package org.mycompany.fitness.service.api;
 
+import org.mycompany.fitness.core.dto.enums.UserStatus;
 import org.mycompany.fitness.core.dto.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.user.UserDTO;
 import org.springframework.data.domain.Page;
@@ -14,4 +15,6 @@ public interface IUserDataService {
     Page<UserDTO> getPage(Pageable pageable);
     UserDTO get(UUID uuid);
     void update(UUID uuid, Instant lastUpdated, UserCreateDTO userCreateDTO);
+    boolean isActivated(String mail);
+    void changeStatus(UUID uuid, Instant lastUpdated, UserStatus status);
 }

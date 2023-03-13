@@ -4,15 +4,21 @@ import java.util.UUID;
 
 public class EntityNotFoundException extends RuntimeException {
 
-    private UUID id;
+    private String id;
     private String entityName;
     public EntityNotFoundException(UUID id, String entityName) {
+        super("No " + entityName + " with id '" + id + "' has been found!");
+        this.id = id.toString();
+        this.entityName = entityName;
+    }
+
+    public EntityNotFoundException(String id, String entityName) {
         super("No " + entityName + " with id '" + id + "' has been found!");
         this.id = id;
         this.entityName = entityName;
     }
 
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 

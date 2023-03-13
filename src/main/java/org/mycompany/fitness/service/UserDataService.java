@@ -1,6 +1,7 @@
 package org.mycompany.fitness.service;
 
 import jakarta.persistence.OptimisticLockException;
+import org.mycompany.fitness.core.dto.enums.UserStatus;
 import org.mycompany.fitness.core.dto.user.UserCreateDTO;
 import org.mycompany.fitness.core.dto.user.UserDTO;
 import org.mycompany.fitness.core.exceptions.custom.EntityNotFoundException;
@@ -70,6 +71,27 @@ public class UserDataService implements IUserDataService {
         user.setPassword(this.passwordEncoder.encode(userCreateDTO.getPassword()));
         user.setFullName(userCreateDTO.getFullName());
         user.setStatus(new Status(userCreateDTO.getStatus()));
+        this.userRepository.save(user);
+    }
+    @Override
+    public boolean isActivated(String mail) {
+
+        User queriedUser = this.userRepository.findByMail(mail)
+                .orElseThrow(() -> new EntityNotFoundException(mail, "user"));
+        return UserStatus.ACTIVATED.equals(queriedUser.getStatus().getStatus());
+    }
+
+    @Override
+    public void changeStatus(UUID uuid, Instant lastUpdated, UserStatus status) {
+        User user = this.userRepository.findById(uuid)
+                .orElseThrow(() -> new EntityNotFoundException(uuid, "user"));
+
+        if (user.getLastUpdated().toEpochMilli() != lastUpdated.toEpochMilli()) {
+            throw new OptimisticLockException("User with id '" + user.getUuid()
+                    + "' has already been modified!");
+        }
+
+        user.setStatus(new Status(status));
         this.userRepository.save(user);
     }
 }
